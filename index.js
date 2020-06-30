@@ -1,7 +1,7 @@
-const { getCaptures } = require('./getCaptures.js');
-const { getQuantifiers } = require('./getQuantifiers.js');
-const { splitRegex } = require('./splitRegex.js');
-const { getUnicode } = require("./getUnicode.js");
+const { getCaptures } = require('./components/getCaptures.js');
+const { getQuantifiers } = require('./components/getQuantifiers.js');
+const { splitRegex } = require('./components/splitRegex.js');
+const { getUnicode } = require("./components/getUnicode.js");
 
 
 function parse(regex) {
