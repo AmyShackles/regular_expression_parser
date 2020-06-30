@@ -2,6 +2,7 @@ const { getCaptures } = require('./components/getCaptures.js');
 const { getQuantifiers } = require('./components/getQuantifiers.js');
 const { splitRegex } = require('./components/splitRegex.js');
 const { getUnicode } = require("./components/getUnicode.js");
+const { getCharacterSets } = require("./components/getCharacterSets.js");
 
 
 function parse(regex) {
@@ -9,10 +10,12 @@ function parse(regex) {
     const captures = getCaptures(expression);
     const quantifiers = getQuantifiers(expression, flags);
     const unicode = getUnicode(expression, flags);
+    const characterSets = getCharacterSets(expression);
     const regularExpression = {
       ...(captures ? { ...captures } : {}),
       ...(quantifiers ? { ...quantifiers } : {}),
-      ...(unicode ? { ...unicode } : {})
+      ...(unicode ? { ...unicode } : {}),
+      ...(characterSets ? { ...characterSets } : {})
     }
     return regularExpression;
   }

@@ -13,7 +13,6 @@ module.exports = {
             group = group.split(",");
             const min = group[0];
             const max = group[1];
-            console.log(group)
             quantifiers[startingIndex] = {
                 "quantifier": {
                     startingIndex,
