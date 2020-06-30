@@ -1,16 +1,16 @@
 module.exports = {
     getCharacterSets: (string) => {
-        const characterSetRegex = /(?:\[)(?<character_set>.*?)(?:\])/g;
+        const characterSetRegex = /(?:\[\^)(?<negated_character_set>.*?)(?:\])|(?:\[)(?<character_set>.*?)(?:\])/g;
         const characterSets = {};
 
         [...string.matchAll(characterSetRegex)].forEach((regex) => {
-            let key = "character_set";
+            let key = regex.groups.negated_character_set ? "negated_character_set" : "character_set";
             const { groups } = regex;
             const startingIndex = regex.index;
             const endingIndex = startingIndex + groups[key].length;
-            const group = regex.groups.character_set;
+            const group = regex.groups[key];
             characterSets[startingIndex] = {
-                "character_set": {
+                [key]: {
                     startingIndex,
                     endingIndex,
                     group
