@@ -37,7 +37,13 @@ module.exports = {
             const { groups } = regex;
             const startingIndex = regex.index;
             const endingIndex = startingIndex + groups[key].length;
-            const group = groups[key];
+            let group = groups[key];
+            if (key === "control_character") {
+                // We need to calculate the value of the character relative to A
+                let codepoint = group.slice(2).charCodeAt(0) - "A".charCodeAt(0);
+                // A starts at 1, so 1 must be added to take offset into account
+                group = String.fromCodePoint(codepoint + 1);
+            }
             characterClasses[startingIndex] = {
                 [key]: {
                     startingIndex,

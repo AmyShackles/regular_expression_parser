@@ -29,4 +29,4 @@ function parse(regex) {
   
 
   
-  console.log(parse(/(ABC) \u{1234}(?<isas>[ai]s)\s[easy]{1,5} \k<isas>\s(123)\1\2{3}\u1234 [\b]sometimes/gim));
+  console.log(parse(/(ABC) \u{1234}(?<isas>[ai]s)\s[easy]{1,5} \k<isas>\s(123)\1\2{3}\u1234 [\b]sometimes\cM/gim));
