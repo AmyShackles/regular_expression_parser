@@ -11,7 +11,7 @@ function parse(regex) {
     const quantifiers = getQuantifiers(expression, flags);
     const unicode = getUnicode(expression, flags);
     const characterSets = getCharacterSets(expression);
-    const characterClasses = getCharacterClasses(expression);
+    const characterClasses = getCharacterClasses(expression, flags);
     const regularExpression = {
       ...(captures ? { ...captures } : {}),
       ...(quantifiers ? { ...quantifiers } : {}),
@@ -29,4 +29,4 @@ function parse(regex) {
   
 
   
-  console.log(parse(/(ABC) \u{1234}(?<isas>[ai]s)\s[easy]{1,5} \k<isas>\s(123)\1\2{3}\u1234 [\b]sometimes\cM/gim));
+  console.log(parse(/(ABC)[^ack]. \xff \u{12345}(?<isas>[ai]s)\s[easy]{1,5} \k<isas>\s(123)\1\2{3}\u1234 [\b]sometimes\cM/g));
