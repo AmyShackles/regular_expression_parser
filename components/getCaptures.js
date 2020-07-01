@@ -2,7 +2,7 @@ module.exports = {
     getCaptures: (string) => {
         let captureRegex = /(?<non_capture_group>\(\?:.+?\))|(?<named_capture_group>\(\?<(?<name>.+?)>.+?\))|(?<capture_group>\([^\?].*?\))/g;
         let captures = {};
-        const group = [...string.matchAll(captureRegex)].forEach((regex) => {
+        [...string.matchAll(captureRegex)].forEach((regex) => {
             let key = regex.groups.capture_group
                 ? "capture_group"
                 : regex.groups.non_capture_group
@@ -21,7 +21,7 @@ module.exports = {
                         "capture group": {
                             startingIndex,
                             endingIndex,
-                            group: regex.groups.capture_group.slice(1, -1),
+                            group: groups.capture_group.slice(1, -1),
                         },
                     };
                     break;
@@ -30,7 +30,7 @@ module.exports = {
                         "non-capture group": {
                             startingIndex,
                             endingIndex,
-                            group: regex.groups.non_capture_group.slice(3, -1),
+                            group: groups.non_capture_group.slice(3, -1),
                         },
                     };
                     break;
@@ -39,9 +39,9 @@ module.exports = {
                         "named capture group": {
                             startingIndex,
                             endingIndex,
-                            name: regex.groups.name,
-                            group: regex.groups.named_capture_group.slice(
-                                regex.groups.name.length + 4,
+                            name: groups.name,
+                            group: groups.named_capture_group.slice(
+                                groups.name.length + 4,
                                 -1
                             ),
                         },
