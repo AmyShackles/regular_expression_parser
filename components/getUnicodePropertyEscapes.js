@@ -1,6 +1,6 @@
 module.exports = {
     getUnicodePropertyEscapes: (string) => {
-        const unicodePropertyEscapeRegex = /(?:\\\p\{)(?<unicode_property_escape>((?<unicode_name>.*?)(?:\=)(?<unicode_value>.*?))|(.*?))(?:\})|(?:\\\P\{)(?<negated_unicode_property_escape>.*?)(?:\})/g;
+        const unicodePropertyEscapeRegex = /(?:\\\p\{)(?<unicode_property_escape>((?<unicode_name>.*?)(?:\=)(?<unicode_value>.*?))|(.*?))(?:\})|(?:\\\P\{)(?<negated_unicode_property_escape>((?<negated_unicode_name>.*?)(?:\=)(?<negated_unicode_value>.*?))|(.*?))(?:\})/g;
         const unicodePropertyEscapes = {};
         [...string.matchAll(unicodePropertyEscapeRegex)].forEach((regex) => {
             const { groups } = regex;
@@ -22,6 +22,8 @@ module.exports = {
                 }
             } else {
                 group = {
+                    negated_unicode_name: groups.negated_unicode_name,
+                    negated_unicode_value: groups.negated_unicode_value,
                     group: groups.negated_unicode_property_escape
                 }
             }
