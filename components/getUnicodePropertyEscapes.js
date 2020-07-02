@@ -1,7 +1,11 @@
+const { UNICODE_PROPERTY_ESCAPE, NEGATED_UNICODE_PROPERTY_ESCAPE } = require("../utils/regexes.js");
+
 module.exports = {
     getUnicodePropertyEscapes: (string) => {
-        const unicodePropertyEscapeRegex = /(?:\\\p\{)(?<unicode_property_escape>((?<unicode_name>.*?)(?:\=)(?<unicode_value>.*?))|(.*?))(?:\})|(?:\\\P\{)(?<negated_unicode_property_escape>((?<negated_unicode_name>.*?)(?:\=)(?<negated_unicode_value>.*?))|(.*?))(?:\})/g;
+        const unicodePropertyEscapeString = UNICODE_PROPERTY_ESCAPE + "|" + NEGATED_UNICODE_PROPERTY_ESCAPE;
+        const unicodePropertyEscapeRegex = new RegExp(unicodePropertyEscapeString, 'g');
         const unicodePropertyEscapes = {};
+        
         [...string.matchAll(unicodePropertyEscapeRegex)].forEach((regex) => {
             const { groups } = regex;
             const key = groups.unicode_property_escape ?  "unicode_property_escape" : "negated_unicode_property_escape";

@@ -1,20 +1,23 @@
+const { NON_GREEDY_QUANTIFIER, GREEDY_QUANTIFIER } = require("../utils/regexes.js");
+
+
 module.exports = {
     getQuantifiers: (string, flags) => {
-        const unicodeMode = flags.includes('u');
-        let quantRegex = unicodeMode ? /(?:[^u]\{)(?<quantifier>\d*,?\d*)(?:\})/g : /(?:\{)(?<quantifier>\d*,?\d*)(?:\})/g;
+        const quantString = NON_GREEDY_QUANTIFIER + "|" + GREEDY_QUANTIFIER;
+        const quantRegex = new RegExp(quantString, 'g');
         let quantifiers = {};
 
-        const quant = [...string.matchAll(quantRegex)].forEach((regex) => {
-            let key = "quantifier";
+        [...string.matchAll(quantRegex)].forEach((regex) => {
             const { groups } = regex;
+            let key = groups.nongreedy_quantifier ? "nongreedy_quantifier" : "greedy_quantifier";
             const startingIndex = regex.index;
             const endingIndex = startingIndex + groups[key].length;
-            let group = regex.groups.quantifier;
+            let group = groups[key];
             group = group.split(",");
             const min = group[0];
             const max = group[1];
             quantifiers[startingIndex] = {
-                "quantifier": {
+                [key]: {
                     startingIndex,
                     endingIndex,
                     group,

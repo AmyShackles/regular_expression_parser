@@ -1,7 +1,11 @@
+const { NON_CAPTURE, NAMED_CAPTURE, CAPTURE } = require('../utils/regexes');
+
 module.exports = {
     getCaptures: (string) => {
-        let captureRegex = /(?<non_capture_group>\(\?:.+?\))|(?<named_capture_group>\(\?<(?<name>.+?)>.+?\))|(?<capture_group>\([^\?].*?\))/g;
+        const captureString = "(?<non_capture_group>" + NON_CAPTURE + ")|(?<named_capture_group>" + NAMED_CAPTURE + ")|(?<capture_group>" + CAPTURE + ")";
+        let captureRegex = new RegExp(captureString, 'g');
         let captures = {};
+
         [...string.matchAll(captureRegex)].forEach((regex) => {
             let key = regex.groups.capture_group
                 ? "capture_group"
@@ -16,27 +20,18 @@ module.exports = {
             const endingIndex = startingIndex + groups[key].length;
 
             switch (key) {
-                case "capture_group":
-                    captures[startingIndex] = {
-                        "capture group": {
-                            startingIndex,
-                            endingIndex,
-                            group: groups.capture_group.slice(1, -1),
-                        },
-                    };
-                    break;
                 case "non_capture_group":
                     captures[startingIndex] = {
-                        "non-capture group": {
+                        "non_capture_group": {
                             startingIndex,
                             endingIndex,
-                            group: groups.non_capture_group.slice(3, -1),
+                            group: groups.non_capture_group.slice(4, -1),
                         },
                     };
                     break;
                 case "named_capture_group":
                     captures[startingIndex] = {
-                        "named capture group": {
+                        "named_capture_group": {
                             startingIndex,
                             endingIndex,
                             name: groups.name,
@@ -44,6 +39,15 @@ module.exports = {
                                 groups.name.length + 4,
                                 -1
                             ),
+                        },
+                    };
+                    break;
+                case "capture_group":
+                    captures[startingIndex] = {
+                        "capture_group": {
+                            startingIndex,
+                            endingIndex,
+                            group: groups.capture_group.slice(1, -1),
                         },
                     };
                     break;

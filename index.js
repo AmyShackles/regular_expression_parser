@@ -8,12 +8,14 @@ const { getUnicodePropertyEscapes } = require('./components/getUnicodePropertyEs
 
 function parse(regex) {
     const { expression, flags } = splitRegex(regex);
+    console.log('expression', expression);
+    const unicodeMode = flags.includes('u');
     const captures = getCaptures(expression);
     const quantifiers = getQuantifiers(expression, flags);
     const unicode = getUnicode(expression, flags);
     const characterSets = getCharacterSets(expression);
     const characterClasses = getCharacterClasses(expression, flags);
-    const unicodePropertyEscapes = getUnicodePropertyEscapes(expression);
+    const unicodePropertyEscapes = unicodeMode ? getUnicodePropertyEscapes(expression) : undefined;
     const regularExpression = {
       ...(captures ? { ...captures } : {}),
       ...(quantifiers ? { ...quantifiers } : {}),
@@ -22,7 +24,7 @@ function parse(regex) {
       ...(characterClasses ? { ...characterClasses } : {}),
       ...(unicodePropertyEscapes ? { ...unicodePropertyEscapes } : {})
     }
-    return regularExpression;
+    return { regularExpression, expression, what: JSON.stringify(characterClasses) }
   }
   
   
@@ -31,5 +33,5 @@ function parse(regex) {
 
   
 
-  
-  console.log(JSON.stringify(parse(/(ABC)[^ack].\P{Cyrillic} \p{General_Category=Letter}\xff \u{12345}(?<isas>[ai]s)\s[easy]{1,5} \p{Script=Latin}\k<isas>\s(123)\1\2{3}\u1234 [\b]sometimes\cM/g), null, '\t'));
+  const exp = parse(/(ABC)[^ack].{2}?\P{Script=Cyrillic} \p{General_Category=Letter}\xff \u{12345}(?<isas>[ai]s)\s[easy]{1,5} \p{Script=Latin}\k<isas>\s(123)\1\2{3}\u1234 [\b]sometimes\cM/gius);
+  console.log(JSON.stringify(exp, null, '\t'));

@@ -1,8 +1,11 @@
+const { DIGIT, NON_DIGIT, ALPHANUMERIC, NON_ALPHANUMERIC, WHITESPACE, NON_WHITESPACE, HORIZONTAL_TAB, CARRIAGE_RETURN, LINEFEED, VERTICAL_TAB, FORM_FEED, BACKSPACE, NUL, CONTROL_CHARACTER, HEX, DOTALL, DOT } = require('../utils/regexes.js');
+
 module.exports = {
     getCharacterClasses: (string, flags) => {
-        const dotAllMode = flags.includes("s");
-        const characterClassRegex = dotAllMode ? /(?<digit>\\d)|(?<non_digit>\\D)|(?<alphanumeric>\\w)|(?<non_alphanumeric>\\W)|(?<whitespace>\\s)|(?<non_whitespace>\\S)|(?<horizontal_tab>\\t)|(?<carriage_return>\\r)|(?<linefeed>\\n)|(?<vertical_tab>\\v)|(?<form_feed>\\f)|(?<backspace>\[\\b.*?\])|(?<NUL>\\0)|(?<control_character>\\c[A-Z])|(?:\\x)(?<hex>[\dA-Fa-f]{2})|(?<!\\)(?<dotAll>\.)/g : /(?<digit>\\d)|(?<non_digit>\\D)|(?<alphanumeric>\\w)|(?<non_alphanumeric>\\W)|(?<whitespace>\\s)|(?<non_whitespace>\\S)|(?<horizontal_tab>\\t)|(?<carriage_return>\\r)|(?<linefeed>\\n)|(?<vertical_tab>\\v)|(?<form_feed>\\f)|(?<backspace>\[\\b.*?\])|(?<NUL>\\0)|(?<control_character>\\c[A-Z])|(?:\\x)(?<hex>[\dA-Fa-f]{2})|(?<!\\)(?<dot>\.)/g;
+        const characterClassString = DIGIT + "|" + NON_DIGIT+ "|" + ALPHANUMERIC + "|" + NON_ALPHANUMERIC + "|" + WHITESPACE + "|" + NON_WHITESPACE+ "|" + HORIZONTAL_TAB + "|" + CARRIAGE_RETURN + "|" + LINEFEED + "|" + VERTICAL_TAB + "|" + FORM_FEED + "|" + BACKSPACE + "|" + NUL + "|" + CONTROL_CHARACTER + "|" + HEX + "|" + (flags.includes("s") ? DOTALL : DOT);
+        const characterClassRegex = new RegExp(characterClassString, 'g');
         const characterClasses = {};
+        
         [...string.matchAll(characterClassRegex)].forEach((regex) => {
             const { groups } = regex;
             const key = findKey(groups);
@@ -28,7 +31,7 @@ module.exports = {
             };
         })
         return characterClasses;
-    }, 
+    },
     findKey: (reg) => {
         let groupKey;
         Object.entries(reg).forEach(([key, value]) => {

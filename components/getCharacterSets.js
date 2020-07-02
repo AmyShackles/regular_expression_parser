@@ -1,6 +1,9 @@
+const { NEGATED_CHARACTER_SET, CHARACTER_SET } = require('../utils/regexes.js');
+
 module.exports = {
     getCharacterSets: (string) => {
-        const characterSetRegex = /(?:\[\^)(?<negated_character_set>.*?)(?:\])|(?:\[)(?<character_set>.*?)(?:\])/g;
+        const characterSetString = NEGATED_CHARACTER_SET + "|" + CHARACTER_SET;
+        const characterSetRegex = new RegExp(characterSetString, 'g');
         const characterSets = {};
 
         [...string.matchAll(characterSetRegex)].forEach((regex) => {
