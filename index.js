@@ -5,6 +5,7 @@ const { getUnicode } = require("./components/getUnicode.js");
 const { getCharacterSets } = require("./components/getCharacterSets.js");
 const { getCharacterClasses } = require("./components/getCharacterClasses.js");
 const { getUnicodePropertyEscapes } = require('./components/getUnicodePropertyEscapes');
+const { getLooks } = require("./components/getLooks.js");
 
 function parse(regex) {
     const { expression, flags } = splitRegex(regex);
@@ -16,13 +17,15 @@ function parse(regex) {
     const characterSets = getCharacterSets(expression);
     const characterClasses = getCharacterClasses(expression, flags);
     const unicodePropertyEscapes = unicodeMode ? getUnicodePropertyEscapes(expression) : undefined;
+    const looks = getLooks(expression);
     const regularExpression = {
       ...(captures ? { ...captures } : {}),
       ...(quantifiers ? { ...quantifiers } : {}),
       ...(unicode ? { ...unicode } : {}),
       ...(characterSets ? { ...characterSets } : {}),
       ...(characterClasses ? { ...characterClasses } : {}),
-      ...(unicodePropertyEscapes ? { ...unicodePropertyEscapes } : {})
+      ...(unicodePropertyEscapes ? { ...unicodePropertyEscapes } : {}),
+      ...(looks ? { ...looks } : {})
     }
     return { regularExpression, expression, what: JSON.stringify(characterClasses) }
   }
