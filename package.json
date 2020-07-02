@@ -1,0 +1,29 @@
+{
+  "name": "regular_expression_parser",
+  "version": "0.0.1",
+  "description": "Convert regular expressions to human-readable descriptions",
+  "main": "index.js",
+  "repository": "git@github.com:AmyShackles/regular_expression_parser.git",
+  "author": "Amy Shackles <amyshackles@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^26.1.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/components/**/*.{js}"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    }
+  },
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "yarn test --coverage"
+  }
+}
