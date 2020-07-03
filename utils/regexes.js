@@ -22,8 +22,8 @@ const DOTALL = "(?<!\\\\)(?<dotAll>\\.)";
 const DOT = "(?<!\\\\)(?<dot>\\.)";
 const NEGATED_CHARACTER_SET = "(?:\\[\\^)(?<negated_character_set>.*?)(?:\\])";
 const CHARACTER_SET = "(?:\\[)(?<character_set>.*?)(?:\\])";
-const NON_GREEDY_QUANTIFIER = "(?<!\\\\u)(?:\\{)(?<nongreedy_quantifier>\\d*,?\\d*)(?:\\}\\?)";
-const GREEDY_QUANTIFIER = "(?<!\\\\u)(?:\\{)(?<greedy_quantifier>\\d*,?\\d*)(?:\\}[^\\?])";
+const NON_GREEDY_RANGE_QUANTIFIER = "(?<!\\\\u)(?<non_greedy_range_quantifier>\\{\\d*,?\\d*\\}\\?)";
+const GREEDY_RANGE_QUANTIFIER = "(?<!\\\\u)(?<greedy_range_quantifier>\\{\\d*,?\\d*\\}(?!\\?))";
 const UNICODE_NAME = "(?<unicode_name>.*?)";
 const UNICODE_VALUE = "(?:\\=)(?<unicode_value>.*?)";
 const NEGATED_UNICODE_NAME = "(?<negated_unicode_name>.*?)";
@@ -40,12 +40,12 @@ const START_OF_STRING = "(?<start_of_string>^\\^)";
 const END_OF_LINE = "(?<end_of_line>\\$$)";
 const END_OF_STRING = "(?<end_of_string>\\$$)";
 const WORD_BOUNDARY = "(?<word_boundary>\\\\b)";
-const GREEDY_OPTIONAL = "(?<!\\{\\d*,?\\d*\\}|\\+|\\?|\\*)(?<optional>\\?)";
-const NON_GREEDY_OPTIONAL = "(?<=\\?)(?<non_greedy_optional>\\?)";
+const GREEDY_OPTIONAL = "(?<!\\{\\d*,?\\d*\\}|\\+|\\?|\\*|[^\\\\]\\()(?<greedy_optional>\\?)(?!\\?)";
+const NON_GREEDY_OPTIONAL = "(?<non_greedy_optional>\\?\\?)";
 const GREEDY_KLEENE_STAR = "(?<greedy_kleene_star>\\*)(?!\\?)";
-const NON_GREEDY_KLEENE_STAR = "(?<non_greedy_kleene_star>\\*)(?=\\?)";
+const NON_GREEDY_KLEENE_STAR = "(?<non_greedy_kleene_star>\\*\\?)";
 const GREEDY_KLEENE_PLUS = "(?<greedy_kleene_plus>\\+)(?!\\?)";
-const NON_GREEDY_KLEENE_PLUS = "(?<non_greedy_kleene_plus>\\+)(?=\\?)";
+const NON_GREEDY_KLEENE_PLUS = "(?<non_greedy_kleene_plus>\\+\\?)";
 
 
 
@@ -74,8 +74,8 @@ module.exports = {
     DOT,
     NEGATED_CHARACTER_SET,
     CHARACTER_SET,
-    NON_GREEDY_QUANTIFIER,
-    GREEDY_QUANTIFIER,
+    NON_GREEDY_RANGE_QUANTIFIER,
+    GREEDY_RANGE_QUANTIFIER,
     UNICODE_NAME,
     UNICODE_VALUE,
     NEGATED_UNICODE_NAME,

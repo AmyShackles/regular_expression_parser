@@ -1,27 +1,37 @@
-const { NON_GREEDY_QUANTIFIER, GREEDY_QUANTIFIER } = require("../utils/regexes.js");
-
+const { NON_GREEDY_RANGE_QUANTIFIER, GREEDY_RANGE_QUANTIFIER, GREEDY_OPTIONAL, NON_GREEDY_OPTIONAL, GREEDY_KLEENE_STAR, NON_GREEDY_KLEENE_STAR, GREEDY_KLEENE_PLUS, NON_GREEDY_KLEENE_PLUS } = require("../utils/regexes.js");
+const { findKey } = require("../utils/findKey.js");
 
 module.exports = {
-    getQuantifiers: (string, flags) => {
-        const quantString = NON_GREEDY_QUANTIFIER + "|" + GREEDY_QUANTIFIER;
+    getQuantifiers: (string) => {
+        const quantString = NON_GREEDY_RANGE_QUANTIFIER + "|" + GREEDY_RANGE_QUANTIFIER + "|" + GREEDY_OPTIONAL + "|" + NON_GREEDY_OPTIONAL + "|" + GREEDY_KLEENE_STAR + "|" + NON_GREEDY_KLEENE_STAR + "|" + GREEDY_KLEENE_PLUS + "|" + NON_GREEDY_KLEENE_PLUS;
         const quantRegex = new RegExp(quantString, 'g');
         let quantifiers = {};
 
         [...string.matchAll(quantRegex)].forEach((regex) => {
             const { groups } = regex;
-            let key = groups.nongreedy_quantifier ? "nongreedy_quantifier" : "greedy_quantifier";
-            const startingIndex = regex.index;
-            const endingIndex = startingIndex + groups[key].length;
+            const key = findKey(groups);
+            const nonGreedyRangeQuantifier = key.includes("non_greedy_range");
             let group = groups[key];
-            group = group.split(",");
-            const min = group[0];
-            const max = group[1];
+            const startingIndex = regex.index;
+            const endingIndex = startingIndex + group.length
+            let min, max;
+            // Logic for ranges to add min and max values to key
+            if (key.includes("range")) {
+                // The range capture includes the braces in order to get the right endIndex
+                // We want to remove those (and the ? if it's a non-greedy range)
+                // So that we can split by comma to get the min and max values
+                let range = nonGreedyRangeQuantifier ? group.slice(1, -2) : group.slice(1, -1);
+                range= range.split(',');
+                min = range[0];
+                max = range[1];
+            }
+
             quantifiers[startingIndex] = {
                 [key]: {
                     startingIndex,
                     endingIndex,
                     group,
-                    min,
+                    ...(min ? { min } : {}),
                     ...(max ? { max } : {})
                 }
             };
