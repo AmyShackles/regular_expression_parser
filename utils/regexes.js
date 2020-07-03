@@ -17,7 +17,7 @@ const FORM_FEED = "(?<form_feed>\\\\f)";
 const BACKSPACE = "(?<=\\[)(?<backspace>\\\\b.*?)(?:\\])";
 const NUL = "(?<NUL>\\\\0)";
 const CONTROL_CHARACTER = "(?<control_character>\\\\c[A-Z])";
-const HEX = "(?:\\\\x)(?<hex>[\\\\dA-Fa-f]{2})";
+const HEX = "(?:\\\\x)(?<hex>[\\dA-Fa-f]{2})";
 const DOTALL = "(?<!\\\\)(?<dotAll>\\.)";
 const DOT = "(?<!\\\\)(?<dot>\\.)";
 const NEGATED_CHARACTER_SET = "(?:\\[\\^)(?<negated_character_set>.*?)(?:\\])";
@@ -30,6 +30,24 @@ const NEGATED_UNICODE_NAME = "(?<negated_unicode_name>.*?)";
 const NEGATED_UNICODE_VALUE = "(?:\\=)(?<negated_unicode_value>.*?)";
 const UNICODE_PROPERTY_ESCAPE = "(?:\\\\\\p\\{)(?<unicode_property_escape>(" + UNICODE_NAME + UNICODE_VALUE + "))";
 const NEGATED_UNICODE_PROPERTY_ESCAPE = "(?:\\\\\\P\\{)(?<negated_unicode_property_escape>(" + NEGATED_UNICODE_NAME + NEGATED_UNICODE_VALUE + "))";
+const NON_WORD_BOUNDARY = "(?<non_word_boundary>\\\\B)";
+const POSITIVE_LOOKAHEAD = "(?:\\(\\?=)(?<positive_lookahead>.*?)(?=\\))";
+const NEGATIVE_LOOKAHEAD = "(?:\\(\\?\\!)(?<negative_lookahead>.*?)(?=\\))";
+const POSITIVE_LOOKBEHIND = "(?:\\(\\?\\<\\=)(?<positive_lookbehind>.*?)(?=\\))";
+const NEGATIVE_LOOKBEHIND = "(?:\\(\\?\\<\\!)(?<negative_lookbehind>.*?)(?=\\))";
+const START_OF_LINE = "(?<start_of_line>^\\^)";
+const START_OF_STRING = "(?<start_of_string>^\\^)";
+const END_OF_LINE = "(?<end_of_line>\\$$)";
+const END_OF_STRING = "(?<end_of_string>\\$$)";
+const WORD_BOUNDARY = "(?<word_boundary>\\\\b)";
+const GREEDY_OPTIONAL = "(?<!\\{\\d*,?\\d*\\}|\\+|\\?|\\*)(?<optional>\\?)";
+const NON_GREEDY_OPTIONAL = "(?<=\\?)(?<non_greedy_optional>\\?)";
+const GREEDY_KLEENE_STAR = "(?<greedy_kleene_star>\\*)(?!\\?)";
+const NON_GREEDY_KLEENE_STAR = "(?<non_greedy_kleene_star>\\*)(?=\\?)";
+const GREEDY_KLEENE_PLUS = "(?<greedy_kleene_plus>\\+)(?!\\?)";
+const NON_GREEDY_KLEENE_PLUS = "(?<non_greedy_kleene_plus>\\+)(?=\\?)";
+
+
 
 module.exports = {
     NON_CAPTURE,
@@ -63,5 +81,21 @@ module.exports = {
     NEGATED_UNICODE_NAME,
     NEGATED_UNICODE_VALUE,
     UNICODE_PROPERTY_ESCAPE,
-    NEGATED_UNICODE_PROPERTY_ESCAPE
+    NEGATED_UNICODE_PROPERTY_ESCAPE,
+    NON_WORD_BOUNDARY,
+    POSITIVE_LOOKAHEAD,
+    NEGATIVE_LOOKAHEAD,
+    POSITIVE_LOOKBEHIND,
+    NEGATIVE_LOOKBEHIND,
+    GREEDY_OPTIONAL,
+    NON_GREEDY_OPTIONAL,
+    GREEDY_KLEENE_STAR,
+    NON_GREEDY_KLEENE_STAR,
+    GREEDY_KLEENE_PLUS,
+    NON_GREEDY_KLEENE_PLUS,
+    START_OF_LINE,
+    START_OF_STRING,
+    END_OF_LINE,
+    END_OF_STRING,
+    WORD_BOUNDARY
 }
