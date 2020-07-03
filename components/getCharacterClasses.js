@@ -1,11 +1,12 @@
 const { DIGIT, NON_DIGIT, ALPHANUMERIC, NON_ALPHANUMERIC, WHITESPACE, NON_WHITESPACE, HORIZONTAL_TAB, CARRIAGE_RETURN, LINEFEED, VERTICAL_TAB, FORM_FEED, BACKSPACE, NUL, CONTROL_CHARACTER, HEX, DOTALL, DOT } = require('../utils/regexes.js');
+const { findKey } = require("../utils/findKey.js");
 
 module.exports = {
     getCharacterClasses: (string, flags) => {
         const characterClassString = DIGIT + "|" + NON_DIGIT+ "|" + ALPHANUMERIC + "|" + NON_ALPHANUMERIC + "|" + WHITESPACE + "|" + NON_WHITESPACE+ "|" + HORIZONTAL_TAB + "|" + CARRIAGE_RETURN + "|" + LINEFEED + "|" + VERTICAL_TAB + "|" + FORM_FEED + "|" + BACKSPACE + "|" + NUL + "|" + CONTROL_CHARACTER + "|" + HEX + "|" + (flags.includes("s") ? DOTALL : DOT);
         const characterClassRegex = new RegExp(characterClassString, 'g');
         const characterClasses = {};
-        
+
         [...string.matchAll(characterClassRegex)].forEach((regex) => {
             const { groups } = regex;
             const key = findKey(groups);
@@ -31,26 +32,6 @@ module.exports = {
             };
         })
         return characterClasses;
-    },
-    findKey: (reg) => {
-        let groupKey;
-        Object.entries(reg).forEach(([key, value]) => {
-            if (!!value) {
-                groupKey = key;
-            }
-        });
-        return groupKey;
     }
 }
 
-function findKey(reg) {
-    // Since only one group will match at a time
-    // We just need to find the group with a value
-    let groupKey;
-    Object.entries(reg).forEach(([key, value]) => {
-        if (!!value) {
-            groupKey = key;
-        }
-    })
-    return groupKey;
-}
