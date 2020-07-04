@@ -1,5 +1,6 @@
+const NAME = "(?<name>.+?)"
 const NON_CAPTURE = "\\(\\?:.+?\\)";
-const NAMED_CAPTURE = "\\(\\?<(?<name>.+?)>.+?\\)";
+const NAMED_CAPTURE = "\\(\\?<" + NAME + ">.+?\\)";
 const CAPTURE = "(?<!\\?:)\\([^\\?].*?\\)";
 const UNICODE_REGEX_IN_UNICODE_MODE = /(?:\\u{)(?<unicode>[\da-fA-F]{4,5})(?:\})/g;
 const UNICODE_REGEX_NOT_IN_UNICODE_MODE = /(?:\\u)(?<unicode>[\da-fA-F]{4})/g;
@@ -46,8 +47,10 @@ const GREEDY_KLEENE_STAR = "(?<greedy_kleene_star>\\*)(?!\\?)";
 const NON_GREEDY_KLEENE_STAR = "(?<non_greedy_kleene_star>\\*\\?)";
 const GREEDY_KLEENE_PLUS = "(?<greedy_kleene_plus>\\+)(?!\\?)";
 const NON_GREEDY_KLEENE_PLUS = "(?<non_greedy_kleene_plus>\\+\\?)";
-
-
+const ALTERNATION = "(?<!\\\\)(?<alternation>\\|)";
+const NAMED_BACKREFERENCE = "(?<!\\\\)(?<named_backreference>\\\\k<" + NAME + ">)";
+const NUMERICAL_BACKREFERENCE = "(?<!\\\\)(?<numerical_backreference>\\\\\\d+)"
+const RANGE = "(?<=\\[.*?)(?<range>.\\-.)(?=.*?\\])"
 
 module.exports = {
     NON_CAPTURE,
@@ -97,5 +100,9 @@ module.exports = {
     START_OF_STRING,
     END_OF_LINE,
     END_OF_STRING,
-    WORD_BOUNDARY
+    WORD_BOUNDARY,
+    ALTERNATION,
+    NAMED_BACKREFERENCE,
+    NUMERICAL_BACKREFERENCE,
+    RANGE
 }

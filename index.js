@@ -7,6 +7,7 @@ const { getCharacterClasses } = require("./components/getCharacterClasses.js");
 const { getUnicodePropertyEscapes } = require('./components/getUnicodePropertyEscapes');
 const { getLooks } = require("./components/getLooks.js");
 const { getBoundaries } = require("./components/getBoundaries.js");
+const { getGroupsAndRanges } = require("./components/getGroupsAndRanges.js");
 
 function parse(regex) {
     const { expression, flags } = splitRegex(regex);
@@ -20,6 +21,7 @@ function parse(regex) {
     const unicodePropertyEscapes = unicodeMode ? getUnicodePropertyEscapes(expression) : undefined;
     const looks = getLooks(expression);
     const boundaries = getBoundaries(expression, flags);
+    const groupsAndRanges = getGroupsAndRanges(expression);
     const regularExpression = {
       ...(captures ? { ...captures } : {}),
       ...(quantifiers ? { ...quantifiers } : {}),
@@ -28,7 +30,8 @@ function parse(regex) {
       ...(characterClasses ? { ...characterClasses } : {}),
       ...(unicodePropertyEscapes ? { ...unicodePropertyEscapes } : {}),
       ...(looks ? { ...looks } : {}),
-      ...(boundaries ? { ...boundaries } : {})
+      ...(boundaries ? { ...boundaries } : {}),
+      ...(groupsAndRanges ? { ...groupsAndRanges } : {})
     }
     return { regularExpression, expression, what: JSON.stringify(characterClasses) }
   }
