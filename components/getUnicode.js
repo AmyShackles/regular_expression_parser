@@ -9,14 +9,17 @@ module.exports = {
             let key = "unicode";
             const { groups } = regex;
             const startingIndex = regex.index;
-            const endingIndex = startingIndex + groups[key].length;
-            const codepoint = parseInt(regex.groups.unicode, 16);
+            // Subtract 1 from groups[key].length to get the last index of groups[key]
+            const endingIndex = startingIndex + (groups[key].length - 1);
+            // Get the hexadecimal values from unicode expression and parse them
+            const group = groups.unicode.includes('{') ? groups.unicode.slice(3, -1) : groups.unicode.slice(2);
+            const codepoint = parseInt(group, 16);
             const hex = String.fromCodePoint(codepoint);
             unicode[startingIndex] = {
                 "unicode": {
                     startingIndex,
                     endingIndex,
-                    hex
+                    group: hex
                 }
             }
         });
