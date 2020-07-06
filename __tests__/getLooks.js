@@ -1,59 +1,92 @@
 const { POSITIVE_LOOKAHEAD, NEGATIVE_LOOKAHEAD, POSITIVE_LOOKBEHIND, NEGATIVE_LOOKBEHIND } = require("../utils/regexes.js");
 const { getLooks } = require("../components/getLooks.js");
 const { splitRegex } = require("../components/splitRegex");
-const { getIndexes } = require("../utils/getIndexes.js");
+const { getParenStack } = require("../utils/getParenStack.js");
 
 
 describe("getLooks", () => {
-    const { expression } = splitRegex(/(?<!\\u\{)(?<=\{)(\d*,?\d*)(?=\})(?!\}\?)/g);
-    const positiveLookaheadIndexes = getIndexes(expression, POSITIVE_LOOKAHEAD);
-    const positiveLookbehindIndexes = getIndexes(expression, POSITIVE_LOOKBEHIND);
-    const negativeLookaheadIndexes = getIndexes(expression, NEGATIVE_LOOKAHEAD);
-    const negativeLookbehindIndexes = getIndexes(expression, NEGATIVE_LOOKBEHIND);
+    const { expression } = splitRegex(/(?<!\\u\{(?:12))(?<=\{)(\d*,?\d*)(?=\})(?!\}\?)/g);
     const looks = getLooks(expression);
+    const parenStack = getParenStack(expression);
+    let positive_lookaheads = {}, negative_lookaheads = {}, positive_lookbehinds = {}, negative_lookbehinds = {};
+    parenStack.forEach(({group, startingIndex, endingIndex}) => {
+        const positiveLookahead = group.match(POSITIVE_LOOKAHEAD);
+        const positiveLookbehind = group.match(POSITIVE_LOOKBEHIND);
+        const negativeLookahead = group.match(NEGATIVE_LOOKAHEAD);
+        const negativeLookbehind = group.match(NEGATIVE_LOOKBEHIND);
+        if (positiveLookahead) {
+            positive_lookaheads[startingIndex] = {
+                group: positiveLookahead['groups']['positive_lookahead'],
+                startingIndex,
+                endingIndex
+            }
+        } else if (positiveLookbehind) {
+            positive_lookbehinds[startingIndex] = {
+                group: positiveLookbehind['groups']['positive_lookbehind'],
+                startingIndex,
+                endingIndex
+            }
+        } else if (negativeLookahead) {
+            negative_lookaheads[startingIndex] = {
+                group: negativeLookahead['groups']['negative_lookahead'],
+                startingIndex,
+                endingIndex
+            }
+        } else if (negativeLookbehind) {
+            negative_lookbehinds[startingIndex] = {
+                group: negativeLookbehind['groups']['negative_lookbehind'],
+                startingIndex,
+                endingIndex
+            }
+        }
+    })
+    positive_lookaheads = Object.values(positive_lookaheads);
+    positive_lookbehinds = Object.values(positive_lookbehinds);
+    negative_lookaheads = Object.values(negative_lookaheads);
+    negative_lookbehinds = Object.values(negative_lookbehinds);
 
     it("should add positive lookaheads", () => {
-        positiveLookaheadIndexes.forEach(look => {
-            expect(looks).toHaveProperty(`${look}.positive_lookahead`);
-            expect(looks).toHaveProperty(`${look}.positive_lookahead.startingIndex`);
-            expect(looks).toHaveProperty(`${look}.positive_lookahead.endingIndex`);
-            expect(looks).toHaveProperty(`${look}.positive_lookahead.group`);
+        positive_lookaheads.forEach(({group, startingIndex, endingIndex}) => {
+            expect(looks).toHaveProperty(`${startingIndex}.positive_lookahead`);
+            expect(looks).toHaveProperty(`${startingIndex}.positive_lookahead.startingIndex`, startingIndex);
+            expect(looks).toHaveProperty(`${startingIndex}.positive_lookahead.endingIndex`, endingIndex);
+            expect(looks).toHaveProperty(`${startingIndex}.positive_lookahead.group`, group);
         });
-        expect(looks).toHaveProperty(`${positiveLookaheadIndexes[0]}.positive_lookahead.startingIndex`, 27);
-        expect(looks).toHaveProperty(`${positiveLookaheadIndexes[0]}.positive_lookahead.endingIndex`, 29);
-        expect(looks).toHaveProperty(`${positiveLookaheadIndexes[0]}.positive_lookahead.group`, '\\}');
+        expect(looks).toHaveProperty(`${positive_lookaheads[0].startingIndex}.positive_lookahead.startingIndex`, 33);
+        expect(looks).toHaveProperty(`${positive_lookaheads[0].startingIndex}.positive_lookahead.endingIndex`, 38);
+        expect(looks).toHaveProperty(`${positive_lookaheads[0].startingIndex}.positive_lookahead.group`, '\\}');
     });
     it("should add negative lookaheads", () => {
-        negativeLookaheadIndexes.forEach(look => {
-            expect(looks).toHaveProperty(`${look}.negative_lookahead`);
-            expect(looks).toHaveProperty(`${look}.negative_lookahead.startingIndex`);
-            expect(looks).toHaveProperty(`${look}.negative_lookahead.endingIndex`);
-            expect(looks).toHaveProperty(`${look}.negative_lookahead.group`);
+        negative_lookaheads.forEach(({group, startingIndex, endingIndex}) => {
+            expect(looks).toHaveProperty(`${startingIndex}.negative_lookahead`);
+            expect(looks).toHaveProperty(`${startingIndex}.negative_lookahead.startingIndex`, startingIndex);
+            expect(looks).toHaveProperty(`${startingIndex}.negative_lookahead.endingIndex`, endingIndex);
+            expect(looks).toHaveProperty(`${startingIndex}.negative_lookahead.group`, group);
         });
-        expect(looks).toHaveProperty(`${negativeLookaheadIndexes[0]}.negative_lookahead.startingIndex`, 33);
-        expect(looks).toHaveProperty(`${negativeLookaheadIndexes[0]}.negative_lookahead.endingIndex`, 37);
-        expect(looks).toHaveProperty(`${negativeLookaheadIndexes[0]}.negative_lookahead.group`, '\\}\\?');
+        expect(looks).toHaveProperty(`${negative_lookaheads[0].startingIndex}.negative_lookahead.startingIndex`, 39);
+        expect(looks).toHaveProperty(`${negative_lookaheads[0].startingIndex}.negative_lookahead.endingIndex`, 46);
+        expect(looks).toHaveProperty(`${negative_lookaheads[0].startingIndex}.negative_lookahead.group`, '\\}\\?');
     });
     it("should add positive lookbehinds", () => {
-        positiveLookbehindIndexes.forEach(look => {
-            expect(looks).toHaveProperty(`${look}.positive_lookbehind`);
-            expect(looks).toHaveProperty(`${look}.positive_lookbehind.startingIndex`);
-            expect(looks).toHaveProperty(`${look}.positive_lookbehind.endingIndex`);
-            expect(looks).toHaveProperty(`${look}.positive_lookbehind.group`);
+        positive_lookbehinds.forEach(({group, startingIndex, endingIndex}) => {
+            expect(looks).toHaveProperty(`${startingIndex}.positive_lookbehind`);
+            expect(looks).toHaveProperty(`${startingIndex}.positive_lookbehind.startingIndex`, startingIndex);
+            expect(looks).toHaveProperty(`${startingIndex}.positive_lookbehind.endingIndex`, endingIndex);
+            expect(looks).toHaveProperty(`${startingIndex}.positive_lookbehind.group`, group);
         });
-        expect(looks).toHaveProperty(`${positiveLookbehindIndexes[0]}.positive_lookbehind.startingIndex`, 10);
-        expect(looks).toHaveProperty(`${positiveLookbehindIndexes[0]}.positive_lookbehind.endingIndex`, 12);
-        expect(looks).toHaveProperty(`${positiveLookbehindIndexes[0]}.positive_lookbehind.group`, '\\{');
+        expect(looks).toHaveProperty(`${positive_lookbehinds[0].startingIndex}.positive_lookbehind.startingIndex`, 16);
+        expect(looks).toHaveProperty(`${positive_lookbehinds[0].startingIndex}.positive_lookbehind.endingIndex`, 22);
+        expect(looks).toHaveProperty(`${positive_lookbehinds[0].startingIndex}.positive_lookbehind.group`, '\\{');
     });
     it("should add negative lookbehinds", () => {
-        negativeLookbehindIndexes.forEach(look => {
-            expect(looks).toHaveProperty(`${look}.negative_lookbehind`);
-            expect(looks).toHaveProperty(`${look}.negative_lookbehind.startingIndex`);
-            expect(looks).toHaveProperty(`${look}.negative_lookbehind.endingIndex`);
-            expect(looks).toHaveProperty(`${look}.negative_lookbehind.group`);
+        negative_lookbehinds.forEach(({group, startingIndex, endingIndex}) => {
+            expect(looks).toHaveProperty(`${startingIndex}.negative_lookbehind`);
+            expect(looks).toHaveProperty(`${startingIndex}.negative_lookbehind.startingIndex`, startingIndex);
+            expect(looks).toHaveProperty(`${startingIndex}.negative_lookbehind.endingIndex`, endingIndex);
+            expect(looks).toHaveProperty(`${startingIndex}.negative_lookbehind.group`, group);
         });
-        expect(looks).toHaveProperty(`${negativeLookbehindIndexes[0]}.negative_lookbehind.startingIndex`, 0);
-        expect(looks).toHaveProperty(`${negativeLookbehindIndexes[0]}.negative_lookbehind.endingIndex`, 5);
-        expect(looks).toHaveProperty(`${negativeLookbehindIndexes[0]}.negative_lookbehind.group`, '\\\\u\\{');
+        expect(looks).toHaveProperty(`${negative_lookbehinds[0].startingIndex}.negative_lookbehind.startingIndex`, 0);
+        expect(looks).toHaveProperty(`${negative_lookbehinds[0].startingIndex}.negative_lookbehind.endingIndex`, 15);
+        expect(looks).toHaveProperty(`${negative_lookbehinds[0].startingIndex}.negative_lookbehind.group`, '\\\\u\\{(?:12)');
     });
 })
