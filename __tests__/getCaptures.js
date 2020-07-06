@@ -1,50 +1,73 @@
 const { getCaptures } = require('../components/getCaptures.js');
 const { NON_CAPTURE, NAMED_CAPTURE, CAPTURE } = require("../utils/regexes.js");
 const { splitRegex } = require("../components/splitRegex");
-const { getIndexes } = require("../utils/getIndexes.js");
+const { getParenStack } = require("../utils/getParenStack.js");
 
 
 describe("getCaptures", () => {
-    const { expression } = splitRegex(/(?:(^|\s))(ABC), as easy as (?<num>123)/g);
-    const nonCaptureIndexes = getIndexes(expression, NON_CAPTURE);
-    const namedCaptureIndexes = getIndexes(expression, NAMED_CAPTURE);
-    const captureIndexes = getIndexes(expression, CAPTURE);
+    const { expression } = splitRegex(/(?:(^|\s))(ABC), (as (easy)) as (?<num>12(?<another>nesting)3)/g);
     const captures = getCaptures(expression);
+    const parenStack = getParenStack(expression);
+    let non_capture_groups = {}, capture_groups = {}, named_capture_groups = {};
+    parenStack.forEach(({group, startingIndex, endingIndex}) => {
+        const namedCapture = group.match(NAMED_CAPTURE)
+        const nonCapture = group.match(NON_CAPTURE);
+        const capture = group.match(CAPTURE);
+        if (namedCapture) {
+            named_capture_groups[startingIndex] = {
+                group: namedCapture['groups']['named_capture_group'],
+                startingIndex,
+                endingIndex
+            }
+        } else if (nonCapture) {
+            non_capture_groups[startingIndex] = {
+                group: nonCapture['groups']['non_capture_group'], 
+                startingIndex,
+                endingIndex
+            }
+        } else if (capture) {
+            capture_groups[startingIndex] = {
+                group: capture['groups']['capture_group'], 
+                startingIndex,
+                endingIndex
+            }
+        }
+    })
+    capture_groups = Object.values(capture_groups);
+    non_capture_groups = Object.values(non_capture_groups);
+    named_capture_groups = Object.values(named_capture_groups);
 
     it("should add non-capture groups", () => {
-        nonCaptureIndexes.forEach(cap => {
-            expect(captures).toHaveProperty(`${cap}.non_capture_group`);
-            expect(captures).toHaveProperty(`${cap}.non_capture_group.startingIndex`);
-            expect(captures).toHaveProperty(`${cap}.non_capture_group.endingIndex`);
-            expect(captures).toHaveProperty(`${cap}.non_capture_group.group`);
-        });
-        expect(captures).toHaveProperty(`${nonCaptureIndexes[0]}.non_capture_group.startingIndex`, 0);
-        expect(captures).toHaveProperty(`${nonCaptureIndexes[0]}.non_capture_group.endingIndex`, 9);
-        expect(captures).toHaveProperty(`${nonCaptureIndexes[0]}.non_capture_group.group`, '^|\\s');
+        non_capture_groups.forEach(({group, startingIndex, endingIndex}) => {
+            expect(captures).toHaveProperty(`${startingIndex}.non_capture_group.startingIndex`, startingIndex);
+            expect(captures).toHaveProperty(`${startingIndex}.non_capture_group.endingIndex`, endingIndex);
+            expect(captures).toHaveProperty(`${startingIndex}.non_capture_group.group`, group)
+        })
+        expect(captures).toHaveProperty(`0.non_capture_group`);
+        expect(captures).toHaveProperty(`0.non_capture_group.startingIndex`, 0);
+        expect(captures).toHaveProperty(`0.non_capture_group.endingIndex`, 9);
+        expect(captures).toHaveProperty(`0.non_capture_group.group`, '(^|\\s)');
     });
     it("should add named capture groups", () => {
-        namedCaptureIndexes.forEach(cap => {
-            expect(captures).toHaveProperty(`${cap}.named_capture_group`);
-            expect(captures).toHaveProperty(`${cap}.named_capture_group.startingIndex`);
-            expect(captures).toHaveProperty(`${cap}.named_capture_group.endingIndex`);
-            expect(captures).toHaveProperty(`${cap}.named_capture_group.group`);
-            expect(captures).toHaveProperty(`${cap}.named_capture_group.name`);
-        });
-        
-        expect(captures).toHaveProperty(`${namedCaptureIndexes[0]}.named_capture_group.startingIndex`, 28);
-        expect(captures).toHaveProperty(`${namedCaptureIndexes[0]}.named_capture_group.endingIndex`, 39);
-        expect(captures).toHaveProperty(`${namedCaptureIndexes[0]}.named_capture_group.group`, '123');
-        expect(captures).toHaveProperty(`${namedCaptureIndexes[0]}.named_capture_group.name`, 'num');
+        named_capture_groups.forEach(({group, startingIndex, endingIndex}) => {
+            expect(captures).toHaveProperty(`${startingIndex}.named_capture_group.startingIndex`, startingIndex);
+            expect(captures).toHaveProperty(`${startingIndex}.named_capture_group.endingIndex`, endingIndex);
+            expect(captures).toHaveProperty(`${startingIndex}.named_capture_group.group`, group)
+        })
+        expect(captures).toHaveProperty(`32.named_capture_group.startingIndex`, 32);
+        expect(captures).toHaveProperty(`32.named_capture_group.endingIndex`, 61);
+        expect(captures).toHaveProperty(`32.named_capture_group.group`, '12(?<another>nesting)3');
+        expect(captures).toHaveProperty(`32.named_capture_group.name`, 'num');
     });
     it("should add unnamed capture groups", () => {
-        captureIndexes.forEach(cap => {
-            expect(captures).toHaveProperty(`${cap}.capture_group`);
-            expect(captures).toHaveProperty(`${cap}.capture_group.startingIndex`);
-            expect(captures).toHaveProperty(`${cap}.capture_group.endingIndex`);
-            expect(captures).toHaveProperty(`${cap}.capture_group.group`);
-        });
-        expect(captures).toHaveProperty(`${captureIndexes[0]}.capture_group.startingIndex`, 10);
-        expect(captures).toHaveProperty(`${captureIndexes[0]}.capture_group.endingIndex`, 15);
-        expect(captures).toHaveProperty(`${captureIndexes[0]}.capture_group.group`, 'ABC');
+        capture_groups.forEach(({group, startingIndex, endingIndex}) => {
+            expect(captures).toHaveProperty(`${startingIndex}.capture_group.startingIndex`, startingIndex);
+            expect(captures).toHaveProperty(`${startingIndex}.capture_group.endingIndex`, endingIndex);
+            expect(captures).toHaveProperty(`${startingIndex}.capture_group.group`, group);
+
+        })
+        expect(captures).toHaveProperty(`10.capture_group.startingIndex`, 10);
+        expect(captures).toHaveProperty(`10.capture_group.endingIndex`, 14);
+        expect(captures).toHaveProperty(`10.capture_group.group`, 'ABC');
     });
 })

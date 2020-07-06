@@ -1,7 +1,7 @@
 const NAME = "(?<name>.+?)"
-const NON_CAPTURE = "\\(\\?:.+?\\)";
-const NAMED_CAPTURE = "\\(\\?<" + NAME + ">.+?\\)";
-const CAPTURE = "(?<!\\?:)\\([^\\?].*?\\)";
+const NON_CAPTURE = "^(?:\\(\\?:)(?<non_capture_group>.+?)\\)$";
+const NAMED_CAPTURE = "^\\(\\?<" + NAME + ">(?<named_capture_group>.+?)\\)$";
+const CAPTURE = "^\\((?<capture_group>[^\\?:].*)\\)$";
 const UNICODE_REGEX_IN_UNICODE_MODE = /(?<unicode>\\u{?[\da-fA-F]{4,5}\}?)/g;
 const UNICODE_REGEX_NOT_IN_UNICODE_MODE = /(?<unicode>\\u[\da-fA-F]{4})/g;
 const DIGIT = "(?<digit>\\\\d)";
@@ -31,10 +31,10 @@ const NEGATED_UNICODE_NAME = "(?<negated_unicode_name>\\w*)";
 const NEGATED_UNICODE_VALUE = "(?:\\=?)(?<negated_unicode_value>\\w*?)?";
 const UNICODE_PROPERTY_ESCAPE = "(?<unicode_property_escape>\\\\p\\{" + UNICODE_NAME + UNICODE_VALUE + "\\})";
 const NEGATED_UNICODE_PROPERTY_ESCAPE = "(?<negated_unicode_property_escape>\\\\P\\{" + NEGATED_UNICODE_NAME + NEGATED_UNICODE_VALUE + "\\})";
-const POSITIVE_LOOKAHEAD = "(?:\\(\\?=)(?<positive_lookahead>.*?)(?=\\))";
-const NEGATIVE_LOOKAHEAD = "(?:\\(\\?\\!)(?<negative_lookahead>.*?)(?=\\))";
-const POSITIVE_LOOKBEHIND = "(?:\\(\\?\\<\\=)(?<positive_lookbehind>.*?)(?=\\))";
-const NEGATIVE_LOOKBEHIND = "(?:\\(\\?\\<\\!)(?<negative_lookbehind>.*?)(?=\\))";
+const POSITIVE_LOOKAHEAD = "^(?:\\(\\?=)(?<positive_lookahead>.*?)\\)$";
+const NEGATIVE_LOOKAHEAD = "^(?:\\(\\?\\!)(?<negative_lookahead>.*?)\\)$";
+const POSITIVE_LOOKBEHIND = "^(?:\\(\\?\\<\\=)(?<positive_lookbehind>.*?)\\)$";
+const NEGATIVE_LOOKBEHIND = "^(?:\\(\\?\\<\\!)(?<negative_lookbehind>.*?)\\)$";
 const START_OF_LINE = "(?<start_of_line>^\\^)";
 const START_OF_STRING = "(?<start_of_string>^\\^)";
 const END_OF_LINE = "(?<end_of_line>\\$$)";
@@ -53,6 +53,7 @@ const NUMERICAL_BACKREFERENCE = "(?<!\\\\)(?<numerical_backreference>\\\\\\d+)"
 const RANGE = "(?<=\\[.*?)(?<range>.\\-.)(?=.*?\\])"
 
 module.exports = {
+    NAME,
     NON_CAPTURE,
     NAMED_CAPTURE,
     CAPTURE,
