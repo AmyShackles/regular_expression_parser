@@ -27,13 +27,13 @@ module.exports = {
                 }
             }
             unicodePropertyEscapes[startingIndex] = {
-                [key]: {
+                    type: key,
                     startingIndex,
                     lastIndex,
                     ...group
                 }
             }
-        });
+        );
         return unicodePropertyEscapes;
     }
 }

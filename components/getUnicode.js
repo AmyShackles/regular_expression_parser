@@ -12,17 +12,19 @@ module.exports = {
             // Subtract 1 from groups[key].length to get the last index of groups[key]
             const lastIndex = startingIndex + (groups[key].length - 1);
             // Get the hexadecimal values from unicode expression and parse them
-            const group = groups.unicode.includes('{') ? groups.unicode.slice(3, -1) : groups.unicode.slice(2);
-            const codepoint = parseInt(group, 16);
-            const hex = String.fromCodePoint(codepoint);
+            const group = groups.unicode;
+            let hex = groups.hex;
+            const codepoint = parseInt(hex, 16);
+            hex = String.fromCodePoint(codepoint);
             unicode[startingIndex] = {
-                "unicode": {
+                    type: 'unicode',
                     startingIndex,
                     lastIndex,
-                    group: hex
+                    group,
+                    match: hex
                 }
             }
-        });
+        );
         return unicode;
     }
 }

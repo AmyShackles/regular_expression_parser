@@ -31,15 +31,15 @@ module.exports = {
             }
 
             quantifiers[startingIndex] = {
-                [key]: {
+                    type: key,
                     startingIndex,
                     lastIndex,
                     group,
                     min,
                     ...(max ? { max } : {})
                 }
-            };
-        });
+            }
+        );
         return quantifiers;
     }
 }

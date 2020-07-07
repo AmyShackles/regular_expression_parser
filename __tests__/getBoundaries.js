@@ -11,14 +11,16 @@ describe("getBoundaries", () => {
     const nonWordBoundaryIndexes = getIndexes(expression, NON_WORD_BOUNDARY);
     describe("multiline flag set", () => {
         it("should add start of line if ^ at the start of regex", () => {
-            expect(boundaries).toHaveProperty(`0.start_of_line.startingIndex`, 0);
-            expect(boundaries).toHaveProperty(`0.start_of_line.lastIndex`, 0);
-            expect(boundaries).toHaveProperty(`0.start_of_line.group`, '^');
+            expect(boundaries).toHaveProperty(`0.type`, 'start_of_line');
+            expect(boundaries).toHaveProperty(`0.startingIndex`, 0);
+            expect(boundaries).toHaveProperty(`0.lastIndex`, 0);
+            expect(boundaries).toHaveProperty(`0.group`, '^');
         });
         it("should add end of line if $ at the end of regex", () => {
-            expect(boundaries).toHaveProperty(`${expressionLength}.end_of_line.startingIndex`, expressionLength);
-            expect(boundaries).toHaveProperty(`${expressionLength}.end_of_line.lastIndex`, expressionLength);
-            expect(boundaries).toHaveProperty(`${expressionLength}.end_of_line.group`, "$");
+            expect(boundaries).toHaveProperty(`${expressionLength}.type`, 'end_of_line');
+            expect(boundaries).toHaveProperty(`${expressionLength}.startingIndex`, expressionLength);
+            expect(boundaries).toHaveProperty(`${expressionLength}.lastIndex`, expressionLength);
+            expect(boundaries).toHaveProperty(`${expressionLength}.group`, "$");
         })
     })
     describe("multiline flag not set", () => {
@@ -26,27 +28,29 @@ describe("getBoundaries", () => {
         const boundaries = getBoundaries(expression, flags);
         const expressionLength = expression.length - 1;
         it("should add start of string if ^ at the start of regex and multiline flag not set", () => {
-            expect(boundaries).toHaveProperty(`0.start_of_string.startingIndex`, 0);
-            expect(boundaries).toHaveProperty(`0.start_of_string.lastIndex`, 0);
-            expect(boundaries).toHaveProperty(`0.start_of_string.group`, '^');
+            expect(boundaries).toHaveProperty(`0.type`, 'start_of_string');
+            expect(boundaries).toHaveProperty(`0.startingIndex`, 0);
+            expect(boundaries).toHaveProperty(`0.lastIndex`, 0);
+            expect(boundaries).toHaveProperty(`0.group`, '^');
         })
         it("should add end of string if $ at the end of regex", () => {
-            expect(boundaries).toHaveProperty(`${expressionLength}.end_of_string.startingIndex`, expressionLength);
-            expect(boundaries).toHaveProperty(`${expressionLength}.end_of_string.lastIndex`, expressionLength);
-            expect(boundaries).toHaveProperty(`${expressionLength}.end_of_string.group`, "$");
+            expect(boundaries).toHaveProperty(`${expressionLength}.type`, 'end_of_string');
+            expect(boundaries).toHaveProperty(`${expressionLength}.startingIndex`, expressionLength);
+            expect(boundaries).toHaveProperty(`${expressionLength}.lastIndex`, expressionLength);
+            expect(boundaries).toHaveProperty(`${expressionLength}.group`, "$");
         })
     })
     it("should add word boundaries", () => {
-        expect(boundaries).toHaveProperty(`${wordBoundaryIndexes[0]}.word_boundary`)
-        expect(boundaries).toHaveProperty(`${wordBoundaryIndexes[0]}.word_boundary.startingIndex`, 32);
-        expect(boundaries).toHaveProperty(`${wordBoundaryIndexes[0]}.word_boundary.lastIndex`, 33);
-        expect(boundaries).toHaveProperty(`${wordBoundaryIndexes[0]}.word_boundary.group`, '\\b')
+        expect(boundaries).toHaveProperty(`${wordBoundaryIndexes[0]}.type`, 'word_boundary')
+        expect(boundaries).toHaveProperty(`${wordBoundaryIndexes[0]}.startingIndex`, 32);
+        expect(boundaries).toHaveProperty(`${wordBoundaryIndexes[0]}.lastIndex`, 33);
+        expect(boundaries).toHaveProperty(`${wordBoundaryIndexes[0]}.group`, '\\b')
     })
     it("should add non-word boundaries", () => {
-        expect(boundaries).toHaveProperty(`${nonWordBoundaryIndexes[0]}.non_word_boundary`)
-        expect(boundaries).toHaveProperty(`${nonWordBoundaryIndexes[0]}.non_word_boundary.startingIndex`, 6);
-        expect(boundaries).toHaveProperty(`${nonWordBoundaryIndexes[0]}.non_word_boundary.lastIndex`, 7);
-        expect(boundaries).toHaveProperty(`${nonWordBoundaryIndexes[0]}.non_word_boundary.group`, '\\B')
+        expect(boundaries).toHaveProperty(`${nonWordBoundaryIndexes[0]}.type`, 'non_word_boundary')
+        expect(boundaries).toHaveProperty(`${nonWordBoundaryIndexes[0]}.startingIndex`, 6);
+        expect(boundaries).toHaveProperty(`${nonWordBoundaryIndexes[0]}.lastIndex`, 7);
+        expect(boundaries).toHaveProperty(`${nonWordBoundaryIndexes[0]}.group`, '\\B')
     })
 
 })

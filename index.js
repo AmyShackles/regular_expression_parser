@@ -34,6 +34,18 @@ function parse(regex) {
     }
     return { regularExpression, expression }
   }
+
+  function nesting(parsedRegex) {
+    parsedRegex = Object.values(parsedRegex);
+    parsedRegex.map(regex => {
+      const { startingIndex, lastIndex } = regex;
+      console.log({
+        regex,
+        startingIndex,
+        lastIndex
+      })
+    })
+  }
   
   
 
@@ -41,8 +53,9 @@ function parse(regex) {
 
   
 
-  const exp = parse(/^\b(ABC)[^ack].{2}?\P{Script=Cyrillic} \p{General_Category=Letter}\xff \u{12345}(?<isas>[ai]s)\s[easy]{1,5} \p{Script=Latin}\k<isas>\s(123)\1\2{3}\u1234 [\b]sometimes\cM\B$/giusm);
-
+  const exp = parse(/^(?<=Hello)\b(ABC)[^ack].{2}?(\P{Script=Cyrillic} \p{General_Category=Letter}\xff \u{12345})(?<isas>[ai]s)\s[easy]{1,5} \p{Script=Latin}\k<isas>\s(123)\1\2{3}\u1234 [\b]sometimes\cM\B(?=Goodbye)$/giusm);
+  const nest = nesting(exp.regularExpression);
+  console.log(JSON.stringify(nest), null, 4)
   module.exports = {
     parse
   }

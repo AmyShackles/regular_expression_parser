@@ -11,23 +11,23 @@ describe("getUnicodePropertyEscapes", () => {
     const negatedUnicodePropertyEscapeIndexes = getIndexes(expression, NEGATED_UNICODE_PROPERTY_ESCAPE);
 
     it("adds unicode property escapes", () => {
-        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[0]}.unicode_property_escape`)
-        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[0]}.unicode_property_escape.startingIndex`, 0);
-        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[0]}.unicode_property_escape.lastIndex`, 9);
-        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[0]}.unicode_property_escape.group`, '\\p{Letter}')
-        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[1]}.unicode_property_escape`)
-        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[1]}.unicode_property_escape.startingIndex`, 10);
-        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[1]}.unicode_property_escape.lastIndex`, 36);
-        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[1]}.unicode_property_escape.group`, '\\p{General_Category=Letter}')
+        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[0]}.type`, 'unicode_property_escape')
+        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[0]}.startingIndex`, 0);
+        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[0]}.lastIndex`, 9);
+        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[0]}.group`, '\\p{Letter}')
+        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[1]}.type`, 'unicode_property_escape')
+        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[1]}.startingIndex`, 10);
+        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[1]}.lastIndex`, 36);
+        expect(unicodePropertyEscapes).toHaveProperty(`${unicodePropertyEscapeIndexes[1]}.group`, '\\p{General_Category=Letter}')
     });
     it("adds negated unicode property escapes", () => {
-        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[0]}.negated_unicode_property_escape`)
-        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[0]}.negated_unicode_property_escape.startingIndex`, 37);
-        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[0]}.negated_unicode_property_escape.lastIndex`, 55);
-        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[0]}.negated_unicode_property_escape.group`, '\\P{Script=Cyrillic}')
-        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[1]}.negated_unicode_property_escape`)
-        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[1]}.negated_unicode_property_escape.startingIndex`, 56);
-        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[1]}.negated_unicode_property_escape.lastIndex`, 62);
-        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[1]}.negated_unicode_property_escape.group`, '\\P{Hex}')
+        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[0]}.type`, 'negated_unicode_property_escape')
+        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[0]}.startingIndex`, 37);
+        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[0]}.lastIndex`, 55);
+        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[0]}.group`, '\\P{Script=Cyrillic}')
+        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[1]}.type`, 'negated_unicode_property_escape')
+        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[1]}.startingIndex`, 56);
+        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[1]}.lastIndex`, 62);
+        expect(unicodePropertyEscapes).toHaveProperty(`${negatedUnicodePropertyEscapeIndexes[1]}.group`, '\\P{Hex}')
     })
 })

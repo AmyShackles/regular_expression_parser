@@ -15,13 +15,13 @@ module.exports = {
             const lastIndex = startingIndex + (group.length - 1);
 
             boundaries[startingIndex] = {
-                [key]: {
+                    type: key,
                     startingIndex,
                     lastIndex,
                     group
                 }
             }
-        });
+        );
         return boundaries;
     }
 }

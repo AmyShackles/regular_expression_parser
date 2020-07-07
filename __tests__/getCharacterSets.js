@@ -11,15 +11,17 @@ describe("getCharacterSets", () => {
     const characterSetIndexes = getIndexes(expression, CHARACTER_SET);
 
     it("adds negated character sets", () => {
-        expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.negated_character_set`)
-        expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.negated_character_set.startingIndex`, 6);
-        expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.negated_character_set.lastIndex`, 9);
-        expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.negated_character_set.group`, '7')
+        expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.type`, 'negated_character_set')
+        expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.startingIndex`, 6);
+        expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.lastIndex`, 9);
+        expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.group`, '[^7]')
+        expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.match`, '7')
     });
     it("adds character sets", () => {
-        expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.character_set`)
-        expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.character_set.startingIndex`, 0);
-        expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.character_set.lastIndex`, 4);
-        expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.character_set.group`, '123')
+        expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.type`, 'character_set');
+        expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.startingIndex`, 0);
+        expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.lastIndex`, 4);
+        expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.group`, '[123]');
+        expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.match`, '123')
     })
 })

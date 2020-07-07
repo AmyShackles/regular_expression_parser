@@ -16,16 +16,18 @@ module.exports = {
             // Subtract 1 from group[key].length to get last index of that range,
             // Add two to account for brackets
             // Add 1 more for negated character sets since the ^ character isn't included in group
-            const lastIndex = startingIndex + (group.length - 1) + (key === "negated_character_set" ? 3 : 2);
+            const lastIndex = startingIndex + (group.length - 1)
+            const match = key === 'negated_character_set' ? groups['negated_set'] : groups['set'];
 
             characterSets[startingIndex] = {
-                [key]: {
+                    type: key,
                     startingIndex,
                     lastIndex,
-                    group
+                    group,
+                    match
                 }
             }
-        });
+        );
         return characterSets;
     }
 }

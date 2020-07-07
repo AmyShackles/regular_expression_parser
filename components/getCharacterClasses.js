@@ -21,18 +21,20 @@ module.exports = {
                 control = String.fromCodePoint(codepoint + 1);
             } else if (groups.hex) {
                 // Convert string hex to hex number to eval
-                group = groups.hex.slice(2)
-                const codepoint = parseInt(group, 16);
+                hex = groups.hex.slice(2)
+                const codepoint = parseInt(hex, 16);
                 hex = String.fromCodePoint(codepoint)
             }
+            const match = groups.control_character ? control : groups.hex ? hex : ''
             characterClasses[startingIndex] = {
-                [key]: {
+                    type: key,
                     startingIndex,
                     lastIndex,
-                    group: groups.control_character ? control : groups.hex ? hex : group
+                    group,
+                    ...(match && { match })
                 }
-            };
-        })
+            }
+        )
         return characterClasses;
     }
 }

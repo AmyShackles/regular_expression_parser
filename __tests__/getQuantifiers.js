@@ -17,65 +17,65 @@ describe("getQuantifiers", () => {
     const quantifiers = getQuantifiers(expression);
 
     it("should add greedy range quantifiers", () => {
-        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[0]}.greedy_range_quantifier`);
-        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[0]}.greedy_range_quantifier.startingIndex`, 61);
-        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[0]}.greedy_range_quantifier.lastIndex`, 63);
-        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[0]}.greedy_range_quantifier.group`, '{7}');
-        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[0]}.greedy_range_quantifier.min`, 7);
-        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[1]}.greedy_range_quantifier`);
-        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[1]}.greedy_range_quantifier.startingIndex`, 98);
-        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[1]}.greedy_range_quantifier.lastIndex`, 103);
-        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[1]}.greedy_range_quantifier.group`, '{5,12}');
-        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[1]}.greedy_range_quantifier.min`, 5);
-        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[1]}.greedy_range_quantifier.max`, 12);
+        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[0]}.type`, 'greedy_range_quantifier');
+        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[0]}.startingIndex`, 61);
+        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[0]}.lastIndex`, 63);
+        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[0]}.group`, '{7}');
+        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[0]}.min`, 7);
+        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[1]}.type`, 'greedy_range_quantifier');
+        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[1]}.startingIndex`, 98);
+        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[1]}.lastIndex`, 103);
+        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[1]}.group`, '{5,12}');
+        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[1]}.min`, 5);
+        expect(quantifiers).toHaveProperty(`${greedyRangeQuantifierIndexes[1]}.max`, 12);
     });
     it("should add non-greedy range quantifiers", () => {
-        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[0]}.non_greedy_range_quantifier`);
-        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[0]}.non_greedy_range_quantifier.startingIndex`, 26);
-        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[0]}.non_greedy_range_quantifier.lastIndex`, 29);
-        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[0]}.non_greedy_range_quantifier.group`, '{5}?');
-        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[0]}.non_greedy_range_quantifier.min`, 5);
-        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[1]}.non_greedy_range_quantifier`);
-        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[1]}.non_greedy_range_quantifier.startingIndex`, 109);
-        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[1]}.non_greedy_range_quantifier.lastIndex`, 114);
-        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[1]}.non_greedy_range_quantifier.group`, '{0,3}?');
-        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[1]}.non_greedy_range_quantifier.min`, 0);
-        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[1]}.non_greedy_range_quantifier.max`, 3);
+        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[0]}.type`, 'non_greedy_range_quantifier');
+        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[0]}.startingIndex`, 26);
+        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[0]}.lastIndex`, 29);
+        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[0]}.group`, '{5}?');
+        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[0]}.min`, 5);
+        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[1]}.type`, 'non_greedy_range_quantifier');
+        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[1]}.startingIndex`, 109);
+        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[1]}.lastIndex`, 114);
+        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[1]}.group`, '{0,3}?');
+        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[1]}.min`, 0);
+        expect(quantifiers).toHaveProperty(`${nonGreedyRangeQuantifierIndexes[1]}.max`, 3);
     });
     it("should add greedy optionals", () => {
-        expect(quantifiers).toHaveProperty(`${greedyOptionalIndexes[0]}.greedy_optional`);
-        expect(quantifiers).toHaveProperty(`${greedyOptionalIndexes[0]}.greedy_optional.startingIndex`, 85);
-        expect(quantifiers).toHaveProperty(`${greedyOptionalIndexes[0]}.greedy_optional.lastIndex`, 85);
-        expect(quantifiers).toHaveProperty(`${greedyOptionalIndexes[0]}.greedy_optional.group`, '?');
+        expect(quantifiers).toHaveProperty(`${greedyOptionalIndexes[0]}.type`, 'greedy_optional');
+        expect(quantifiers).toHaveProperty(`${greedyOptionalIndexes[0]}.startingIndex`, 85);
+        expect(quantifiers).toHaveProperty(`${greedyOptionalIndexes[0]}.lastIndex`, 85);
+        expect(quantifiers).toHaveProperty(`${greedyOptionalIndexes[0]}.group`, '?');
     });
     it("should add non-greedy optionals", () => {
-        expect(quantifiers).toHaveProperty(`${nonGreedyOptionalIndexes[0]}.non_greedy_optional`);
-        expect(quantifiers).toHaveProperty(`${nonGreedyOptionalIndexes[0]}.non_greedy_optional.startingIndex`, 95);
-        expect(quantifiers).toHaveProperty(`${nonGreedyOptionalIndexes[0]}.non_greedy_optional.lastIndex`, 96);
-        expect(quantifiers).toHaveProperty(`${nonGreedyOptionalIndexes[0]}.non_greedy_optional.group`, '??');
+        expect(quantifiers).toHaveProperty(`${nonGreedyOptionalIndexes[0]}.type`, 'non_greedy_optional');
+        expect(quantifiers).toHaveProperty(`${nonGreedyOptionalIndexes[0]}.startingIndex`, 95);
+        expect(quantifiers).toHaveProperty(`${nonGreedyOptionalIndexes[0]}.lastIndex`, 96);
+        expect(quantifiers).toHaveProperty(`${nonGreedyOptionalIndexes[0]}.group`, '??');
     });
     it("should add greedy Kleene stars", () => {
-        expect(quantifiers).toHaveProperty(`${greedyKleeneStarIndexes[0]}.greedy_kleene_star`);
-        expect(quantifiers).toHaveProperty(`${greedyKleeneStarIndexes[0]}.greedy_kleene_star.startingIndex`, 53);
-        expect(quantifiers).toHaveProperty(`${greedyKleeneStarIndexes[0]}.greedy_kleene_star.lastIndex`, 53);
-        expect(quantifiers).toHaveProperty(`${greedyKleeneStarIndexes[0]}.greedy_kleene_star.group`, '*');
+        expect(quantifiers).toHaveProperty(`${greedyKleeneStarIndexes[0]}.type`, 'greedy_kleene_star');
+        expect(quantifiers).toHaveProperty(`${greedyKleeneStarIndexes[0]}.startingIndex`, 53);
+        expect(quantifiers).toHaveProperty(`${greedyKleeneStarIndexes[0]}.lastIndex`, 53);
+        expect(quantifiers).toHaveProperty(`${greedyKleeneStarIndexes[0]}.group`, '*');
     });
     it("should add non-greedy Kleene stars", () => {
-        expect(quantifiers).toHaveProperty(`${nonGreedyKleeneStarIndexes[0]}.non_greedy_kleene_star`);
-        expect(quantifiers).toHaveProperty(`${nonGreedyKleeneStarIndexes[0]}.non_greedy_kleene_star.startingIndex`, 106);
-        expect(quantifiers).toHaveProperty(`${nonGreedyKleeneStarIndexes[0]}.non_greedy_kleene_star.lastIndex`, 107);
-        expect(quantifiers).toHaveProperty(`${nonGreedyKleeneStarIndexes[0]}.non_greedy_kleene_star.group`, '*?');
+        expect(quantifiers).toHaveProperty(`${nonGreedyKleeneStarIndexes[0]}.type`, 'non_greedy_kleene_star');
+        expect(quantifiers).toHaveProperty(`${nonGreedyKleeneStarIndexes[0]}.startingIndex`, 106);
+        expect(quantifiers).toHaveProperty(`${nonGreedyKleeneStarIndexes[0]}.lastIndex`, 107);
+        expect(quantifiers).toHaveProperty(`${nonGreedyKleeneStarIndexes[0]}.group`, '*?');
     });
     it("should add greedy Kleene pluses", () => {
-        expect(quantifiers).toHaveProperty(`${greedyKleenePlusIndexes[0]}.greedy_kleene_plus`);
-        expect(quantifiers).toHaveProperty(`${greedyKleenePlusIndexes[0]}.greedy_kleene_plus.startingIndex`, 18);
-        expect(quantifiers).toHaveProperty(`${greedyKleenePlusIndexes[0]}.greedy_kleene_plus.lastIndex`, 18);
-        expect(quantifiers).toHaveProperty(`${greedyKleenePlusIndexes[0]}.greedy_kleene_plus.group`, '+');
+        expect(quantifiers).toHaveProperty(`${greedyKleenePlusIndexes[0]}.type`, 'greedy_kleene_plus');
+        expect(quantifiers).toHaveProperty(`${greedyKleenePlusIndexes[0]}.startingIndex`, 18);
+        expect(quantifiers).toHaveProperty(`${greedyKleenePlusIndexes[0]}.lastIndex`, 18);
+        expect(quantifiers).toHaveProperty(`${greedyKleenePlusIndexes[0]}.group`, '+');
     });
     it("should add non-greedy Kleene pluses", () => {
-        expect(quantifiers).toHaveProperty(`${nonGreedyKleenePlusIndexes[0]}.non_greedy_kleene_plus`);
-        expect(quantifiers).toHaveProperty(`${nonGreedyKleenePlusIndexes[0]}.non_greedy_kleene_plus.startingIndex`, 2);
-        expect(quantifiers).toHaveProperty(`${nonGreedyKleenePlusIndexes[0]}.non_greedy_kleene_plus.lastIndex`, 3);
-        expect(quantifiers).toHaveProperty(`${nonGreedyKleenePlusIndexes[0]}.non_greedy_kleene_plus.group`, '+?');
+        expect(quantifiers).toHaveProperty(`${nonGreedyKleenePlusIndexes[0]}.type`, 'non_greedy_kleene_plus');
+        expect(quantifiers).toHaveProperty(`${nonGreedyKleenePlusIndexes[0]}.startingIndex`, 2);
+        expect(quantifiers).toHaveProperty(`${nonGreedyKleenePlusIndexes[0]}.lastIndex`, 3);
+        expect(quantifiers).toHaveProperty(`${nonGreedyKleenePlusIndexes[0]}.group`, '+?');
     });
 })

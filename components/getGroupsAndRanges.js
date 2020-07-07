@@ -15,34 +15,32 @@ module.exports = {
 
             if (key === "alternation") {
                 groupsAndRanges[startingIndex] = {
-                    "alternation": {
+                        type:  "alternation",
                         startingIndex,
                         lastIndex,
                         group: groups.alternation
-                    }
                 };
             } else if (key === "named_backreference") {
                 groupsAndRanges[startingIndex] = {
-                    "named_backreference": {
+                        type: "named_backreference",
                         startingIndex,
                         lastIndex,
                         group: groups.named_backreference,
                         name: groups.name
-                    }
                 };
             } else if (key === "numerical_backreference") {
                 groupsAndRanges[startingIndex] = {
-                    "numerical_backreference": {
+                        type: 'numerical_backreference',
                         startingIndex,
                         lastIndex,
-                        group: groups.numerical_backreference.slice(1) // We only care about the number
-                    }
-                };
+                        group: groups.numerical_backreference,
+                        match: groups.numerical_backreference.slice(1) // We only care about the number
+                }
             } else {
                 // This is so we can separate the start and end of range
                 const group = groups.range.split('-');
                 groupsAndRanges[startingIndex] = {
-                    "range": {
+                        type: 'range',
                         startingIndex,
                         lastIndex,
                         group: groups.range,
@@ -51,7 +49,7 @@ module.exports = {
                     }
                 };
             }
-        });
+        );
         return groupsAndRanges;
     }
 }

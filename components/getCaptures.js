@@ -11,9 +11,9 @@ module.exports = {
     
             if (named_capture || non_capture || capture) {
                 captures[startingIndex] = {
-                    ...(named_capture ? { named_capture_group: { group: named_capture['groups']['named_capture_group'], startingIndex, lastIndex, name: named_capture['groups']['name'] }} : {}),
-                    ...(non_capture ? { non_capture_group: { group: non_capture['groups']['non_capture_group'], startingIndex, lastIndex}} : {}),
-                    ...(capture ? { capture_group: { group: capture['groups']['capture_group'], startingIndex, lastIndex }} : {})
+                    ...(named_capture ? { type: 'named_capture_group', group: named_capture['groups']['named_capture_group'], match: named_capture['groups']['named_capture'], startingIndex, lastIndex, name: named_capture['groups']['name'] } : {}),
+                    ...(non_capture ? { type: 'non_capture_group', group: non_capture['groups']['non_capture_group'], match: non_capture['groups']['non_capture'], startingIndex, lastIndex} : {}),
+                    ...(capture ? { type: 'capture_group', group: capture['groups']['capture_group'], match: capture['groups']['capture'], startingIndex, lastIndex } : {})
                 }
             }
         });
