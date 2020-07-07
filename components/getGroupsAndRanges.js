@@ -9,54 +9,47 @@ module.exports = {
 
         [...string.matchAll(groupsAndRangeRegex)].forEach(regex => {
             const { groups } = regex;
-            const key = groups.alternation ? "alternation" : groups.named_backreference ? "named_backreference" : groups.numerical_backreference ? "numerical_backreference" : groups.range ? "range" : "";
+            const key = groups.alternation ? "alternation" : groups.named_backreference ? "named_backreference" : groups.numerical_backreference ? "numerical_backreference" : "range";
             const startingIndex = regex.index;
-            const endingIndex = startingIndex + groups[key].length;
+            const lastIndex = startingIndex + (groups[key].length - 1);
 
-            switch (key) {
-                case "alternation":
-                    groupsAndRanges[startingIndex] = {
-                        "alternation": {
-                            startingIndex,
-                            endingIndex,
-                            group: groups.alternation
-                        }
-                    };
-                    break;
-                case "named_backreference":
-                    groupsAndRanges[startingIndex] = {
-                        "named_backreference": {
-                            startingIndex,
-                            endingIndex,
-                            group: groups.named_backreference,
-                            name: groups.name
-                        }
-                    };
-                    break;
-                case "numerical_backreference":
-                    groupsAndRanges[startingIndex] = {
-                        "numerical_backreference": {
-                            startingIndex,
-                            endingIndex,
-                            group: groups.numerical_backreference.slice(1) // We only care about the number
-                        }
-                    };
-                    break;
-                case "range":
-                    // This is so we can separate the start and end of range
-                    const group = groups.range.split('-');
-                    groupsAndRanges[startingIndex] = {
-                        "range": {
-                            startingIndex,
-                            endingIndex,
-                            group: groups.range,
-                            rangeStart: group[0],
-                            rangeEnd: group[1]
-                        }
-                    };
-                    break;
-                default:
-                    break;
+            if (key === "alternation") {
+                groupsAndRanges[startingIndex] = {
+                    "alternation": {
+                        startingIndex,
+                        lastIndex,
+                        group: groups.alternation
+                    }
+                };
+            } else if (key === "named_backreference") {
+                groupsAndRanges[startingIndex] = {
+                    "named_backreference": {
+                        startingIndex,
+                        lastIndex,
+                        group: groups.named_backreference,
+                        name: groups.name
+                    }
+                };
+            } else if (key === "numerical_backreference") {
+                groupsAndRanges[startingIndex] = {
+                    "numerical_backreference": {
+                        startingIndex,
+                        lastIndex,
+                        group: groups.numerical_backreference.slice(1) // We only care about the number
+                    }
+                };
+            } else {
+                // This is so we can separate the start and end of range
+                const group = groups.range.split('-');
+                groupsAndRanges[startingIndex] = {
+                    "range": {
+                        startingIndex,
+                        lastIndex,
+                        group: groups.range,
+                        rangeStart: group[0],
+                        rangeEnd: group[1]
+                    }
+                };
             }
         });
         return groupsAndRanges;
