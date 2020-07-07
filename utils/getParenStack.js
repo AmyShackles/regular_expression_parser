@@ -13,7 +13,7 @@ module.exports = {
                     const group = string.slice(match, index + 1);
                     captures.push({group,
                         startingIndex: match,
-                        endingIndex: index
+                        lastIndex: index
                     })
                 }
             }
