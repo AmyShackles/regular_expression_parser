@@ -6,13 +6,17 @@
   "repository": "git@github.com:AmyShackles/regular_expression_parser.git",
   "author": "Amy Shackles <amyshackles@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-    "jest": "^26.1.0"
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "yarn test --coverage"
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/components/**/*.{js}"
+      "**/*.js",
+      "./index.js",
+      "!**/coverage/**"
     ],
+    "collectCoverage": true,
     "coverageThreshold": {
       "global": {
         "branches": 90,
@@ -22,8 +26,7 @@
       }
     }
   },
-  "scripts": {
-    "test": "jest",
-    "test:coverage": "yarn test --coverage"
+  "devDependencies": {
+    "jest": "^26.1.0"
   }
 }
