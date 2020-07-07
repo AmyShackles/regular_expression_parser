@@ -13,7 +13,7 @@ module.exports = {
             const nonGreedyRangeQuantifier = key.includes("non_greedy_range");
             let group = groups[key];
             const startingIndex = regex.index;
-            const endingIndex = startingIndex + group.length
+            const lastIndex = startingIndex + (group.length - 1)
             let min, max;
             // Logic for ranges to add min and max values to key
             if (key.includes("range")) {
@@ -21,22 +21,25 @@ module.exports = {
                 // We want to remove those (and the ? if it's a non-greedy range)
                 // So that we can split by comma to get the min and max values
                 let range = nonGreedyRangeQuantifier ? group.slice(1, -2) : group.slice(1, -1);
-                range= range.split(',');
-                min = range[0];
-                max = range[1];
+                if (range.includes(',')) {
+                    range = range.split(',');
+                    min = +range[0];
+                    max = +range[1];
+                } else {
+                    min = +range;
+                }
             }
 
             quantifiers[startingIndex] = {
                 [key]: {
                     startingIndex,
-                    endingIndex,
+                    lastIndex,
                     group,
-                    ...(min ? { min } : {}),
+                    min,
                     ...(max ? { max } : {})
                 }
             };
         });
-
         return quantifiers;
     }
 }
