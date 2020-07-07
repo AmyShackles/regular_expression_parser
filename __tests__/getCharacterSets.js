@@ -13,13 +13,13 @@ describe("getCharacterSets", () => {
     it("adds negated character sets", () => {
         expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.negated_character_set`)
         expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.negated_character_set.startingIndex`, 6);
-        expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.negated_character_set.endingIndex`, 9);
+        expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.negated_character_set.lastIndex`, 9);
         expect(characterSets).toHaveProperty(`${negatedCharacterSetIndexes[0]}.negated_character_set.group`, '7')
     });
     it("adds character sets", () => {
         expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.character_set`)
         expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.character_set.startingIndex`, 0);
-        expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.character_set.endingIndex`, 4);
+        expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.character_set.lastIndex`, 4);
         expect(characterSets).toHaveProperty(`${characterSetIndexes[0]}.character_set.group`, '123')
     })
 })
