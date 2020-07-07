@@ -12,12 +12,12 @@ module.exports = {
             const key = findKey(groups);
             const group = groups[key];
             const startingIndex = regex.index;
-            const endingIndex = startingIndex + group.length;
+            const lastIndex = startingIndex + (group.length - 1);
 
             boundaries[startingIndex] = {
                 [key]: {
                     startingIndex,
-                    endingIndex,
+                    lastIndex,
                     group
                 }
             }
