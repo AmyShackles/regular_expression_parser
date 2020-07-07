@@ -18,7 +18,7 @@ const FORM_FEED = "(?<form_feed>\\\\f)";
 const BACKSPACE = "(?<=\\[)(?<backspace>\\\\b.*?)(?:\\])";
 const NUL = "(?<NUL>\\\\0)";
 const CONTROL_CHARACTER = "(?<control_character>\\\\c[A-Z])";
-const HEX = "(?:\\\\x)(?<hex>[\\dA-Fa-f]{2})";
+const HEX = "(?<hex>\\\\x[\\dA-Fa-f]{2})";
 const DOTALL = "(?<!\\\\)(?<dotAll>\\.)";
 const DOT = "(?<!\\\\)(?<dot>\\.)";
 const NEGATED_CHARACTER_SET = "\\[\\^(?<negated_character_set>.+?)\\]";
@@ -49,7 +49,7 @@ const GREEDY_KLEENE_PLUS = "(?<greedy_kleene_plus>\\+)(?!\\?)";
 const NON_GREEDY_KLEENE_PLUS = "(?<non_greedy_kleene_plus>\\+\\?)";
 const ALTERNATION = "(?<!\\\\)(?<alternation>\\|)";
 const NAMED_BACKREFERENCE = "(?<!\\\\)(?<named_backreference>\\\\k<" + NAME + ">)";
-const NUMERICAL_BACKREFERENCE = "(?<!\\\\)(?<numerical_backreference>\\\\\\d+)"
+const NUMERICAL_BACKREFERENCE = "(?<!\\\\)(?<numerical_backreference>\\\\[1-9]\\d*)"
 const RANGE = "(?<=\\[.*?)(?<range>.\\-.)(?=.*?\\])"
 
 module.exports = {
