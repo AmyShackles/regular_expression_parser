@@ -12,15 +12,15 @@ describe("getBoundaries", () => {
 
         expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[0]}.unicode`)
         expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[0]}.unicode.startingIndex`, 1);
-        expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[0]}.unicode.endingIndex`, 6);
+        expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[0]}.unicode.lastIndex`, 6);
         expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[0]}.unicode.group`, 'ሴ');
         expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[1]}.unicode`)
         expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[1]}.unicode.startingIndex`, 7);
-        expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[1]}.unicode.endingIndex`, 14);
+        expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[1]}.unicode.lastIndex`, 14);
         expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[1]}.unicode.group`, 'ሴ');
         expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[2]}.unicode`)
         expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[2]}.unicode.startingIndex`, 15);
-        expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[2]}.unicode.endingIndex`, 23);
+        expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[2]}.unicode.lastIndex`, 23);
         expect(unicode).toHaveProperty(`${unicodeRegexInUnicodeModeIndexes[2]}.unicode.group`, '𒍅' );
     });
     it("should add unicode when unicode flag is not set", () => {
@@ -30,7 +30,7 @@ describe("getBoundaries", () => {
 
         expect(unicode).toHaveProperty(`${unicodeRegexNotInUnicodeModeIndexes[0]}.unicode`)
         expect(unicode).toHaveProperty(`${unicodeRegexNotInUnicodeModeIndexes[0]}.unicode.startingIndex`, 1);
-        expect(unicode).toHaveProperty(`${unicodeRegexNotInUnicodeModeIndexes[0]}.unicode.endingIndex`, 6);
+        expect(unicode).toHaveProperty(`${unicodeRegexNotInUnicodeModeIndexes[0]}.unicode.lastIndex`, 6);
         expect(unicode).toHaveProperty(`${unicodeRegexNotInUnicodeModeIndexes[0]}.unicode.group`, 'ሴ')
         
     });

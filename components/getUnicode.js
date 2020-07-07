@@ -10,7 +10,7 @@ module.exports = {
             const { groups } = regex;
             const startingIndex = regex.index;
             // Subtract 1 from groups[key].length to get the last index of groups[key]
-            const endingIndex = startingIndex + (groups[key].length - 1);
+            const lastIndex = startingIndex + (groups[key].length - 1);
             // Get the hexadecimal values from unicode expression and parse them
             const group = groups.unicode.includes('{') ? groups.unicode.slice(3, -1) : groups.unicode.slice(2);
             const codepoint = parseInt(group, 16);
@@ -18,7 +18,7 @@ module.exports = {
             unicode[startingIndex] = {
                 "unicode": {
                     startingIndex,
-                    endingIndex,
+                    lastIndex,
                     group: hex
                 }
             }
