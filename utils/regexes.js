@@ -1,4 +1,4 @@
-const NAME = "(?<name>.+?)"
+const NAME = "(?<name>.+?)";
 const NON_CAPTURE = "^(?<non_capture_group>\\(\\?:(?<non_capture>.+?)\\))$";
 const NAMED_CAPTURE = "^(?<named_capture_group>\\(\\?<" + NAME + ">(?<named_capture>.+?)\\))$";
 const CAPTURE = "^(?<capture_group>\\((?<capture>[^\\?:].*)\\))$";
@@ -49,8 +49,9 @@ const GREEDY_KLEENE_PLUS = "(?<greedy_kleene_plus>\\+)(?!\\?)";
 const NON_GREEDY_KLEENE_PLUS = "(?<non_greedy_kleene_plus>\\+\\?)";
 const ALTERNATION = "(?<!\\\\)(?<alternation>\\|)";
 const NAMED_BACKREFERENCE = "(?<!\\\\)(?<named_backreference>\\\\k<" + NAME + ">)";
-const NUMERICAL_BACKREFERENCE = "(?<!\\\\)(?<numerical_backreference>\\\\[1-9]\\d*)"
-const RANGE = "(?<=\\[.*?)(?<range>.\\-.)(?=.*?\\])"
+const NUMERICAL_BACKREFERENCE = "(?<!\\\\)(?<numerical_backreference>\\\\[1-9]\\d*)";
+const RANGE = "(?<=\\[.*?)(?<range>.\\-.)(?=.*?\\])";
+const LITERAL = "(?<literal>.)";
 
 module.exports = {
     NAME,
@@ -105,5 +106,6 @@ module.exports = {
     ALTERNATION,
     NAMED_BACKREFERENCE,
     NUMERICAL_BACKREFERENCE,
-    RANGE
+    RANGE,
+    LITERAL
 }

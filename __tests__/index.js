@@ -1,4 +1,4 @@
-const { parse } = require("../index.js");
+const { parse, createTree } = require("../index.js");
 
 describe("parse", () => {
     it("should handle captures if captures are present", () => {
@@ -98,4 +98,19 @@ describe("parse", () => {
         expect(parsedExpression).toHaveProperty('regularExpression.37', { type: 'negated_unicode_property_escape', group: '\\P{Uppercase_Letter}', startingIndex: 37, lastIndex: 56, negated_unicode_name: 'Uppercase_Letter'});
         expect(parsedExpression).toHaveProperty('regularExpression.57', { type: 'negated_unicode_property_escape', group: '\\P{Script=Cyrillic}', startingIndex: 57, lastIndex: 75, negated_unicode_name: 'Script', negated_unicode_value: 'Cyrillic'})
     })
-})
+});
+
+// describe("createTree", () => {
+//     const regex = /(\p{Letter}\p{General_Category=Number}\P{Uppercase_Letter}\P{Script=Cyrillic})/gu;
+//     const parsedExpression = parse(regex);
+//     const tree = createTree(parsedExpression.regularExpression);
+//     it("should add groups with overlapping indices to the main group they exist within", () => {
+//         expect(tree).toHaveLength(1)
+//     });
+//     it("should be able to handle multiple layers of nesting", () => {
+//         const regex = /(\p{Letter}(\p{General_Category=Number} (ABC (123) ) )\P{Uppercase_Letter}\P{Script=Cyrillic})/gu;
+//         const parsedExpression = parse(regex);
+//         const tree = createTree(parsedExpression.regularExpression);
+//         expect(tree[0].groups).toHaveLength(7)
+//     })
+// })

@@ -8,6 +8,8 @@ const { getUnicodePropertyEscapes } = require('./components/getUnicodePropertyEs
 const { getLooks } = require("./components/getLooks.js");
 const { getBoundaries } = require("./components/getBoundaries.js");
 const { getGroupsAndRanges } = require("./components/getGroupsAndRanges.js");
+const { getLiterals } = require("./components/getLiterals.js");
+const { makeStatement } = require("./components/makeStatement.js")
 
 function parse(regex) {
     const { expression, flags } = splitRegex(regex);
@@ -21,7 +23,13 @@ function parse(regex) {
     const looks = getLooks(expression);
     const boundaries = getBoundaries(expression, flags);
     const groupsAndRanges = getGroupsAndRanges(expression);
-    const regularExpression = {
+    const regularExpressionSansLiterals = createObject(captures, quantifiers, unicode, characterSets, characterClasses, unicodePropertyEscapes, looks, boundaries, groupsAndRanges);
+    const regularExpression = getLiterals(expression, regularExpressionSansLiterals);
+    return { regularExpression, expression }
+  }
+
+  function createObject(captures, quantifiers, unicode, characterSets, characterClasses, unicodePropertyEscapes, looks, boundaries, groupsAndRanges) {
+    return {
       ...(captures && { ...captures }),
       ...(quantifiers && { ...quantifiers }),
       ...(unicode && { ...unicode }),
@@ -32,19 +40,29 @@ function parse(regex) {
       ...(boundaries && { ...boundaries }),
       ...(groupsAndRanges && { ...groupsAndRanges })
     }
-    return { regularExpression, expression }
   }
 
-  function nesting(parsedRegex) {
+  function createTree(parsedRegex) {
     parsedRegex = Object.values(parsedRegex);
-    parsedRegex.map(regex => {
-      const { startingIndex, lastIndex } = regex;
-      console.log({
-        regex,
-        startingIndex,
-        lastIndex
-      })
-    })
+    let tree = [parsedRegex[0]];
+    for (let index = 1; index < parsedRegex.length; index++) {
+      let prev = tree.pop();
+      let prevGroup = prev.group;
+      let current = parsedRegex[index];
+      let next
+      if (current.startingIndex < prev.lastIndex) {
+        if (prev.groups === undefined) {
+          prev.groups = [current]
+        } else {
+          prev.groups.push(current);
+        }
+        tree.push(prev);
+      } else {
+        tree.push(prev, current);
+      }
+    }
+    return tree
+
   }
   
   
@@ -53,9 +71,11 @@ function parse(regex) {
 
   
 
-  const exp = parse(/^(?<=Hello)\b(ABC)[^ack].{2}?(\P{Script=Cyrillic} \p{General_Category=Letter}\xff \u{12345})(?<isas>[ai]s)\s[easy]{1,5} \p{Script=Latin}\k<isas>\s(123)\1\2{3}\u1234 [\b]sometimes\cM\B(?=Goodbye)$/giusm);
-  const nest = nesting(exp.regularExpression);
-  console.log(JSON.stringify(nest), null, 4)
+  const exp = parse(/^(?<=Hello (a(ga)in))\b(ABC)[^ack].{2}?(\P{Script=Cyrillic} \p{General_Category=Letter}\xff \u{12345})(?<isas>[ai]s)\s[easy]{1,5} \p{Script=Latin}\k<isas>\s(123)\1\2{3}\u1234 [\b]sometimes\cM\B(?=Goodbye)$/giusm);
+  const tree = createTree(exp.regularExpression);
+  const made = makeStatement(tree)
+  console.log(JSON.stringify(made, null, 4))
   module.exports = {
-    parse
+    parse,
+    createObject
   }
