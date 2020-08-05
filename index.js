@@ -15,6 +15,7 @@ function parse(regex) {
     const { expression, flags } = splitRegex(regex);
     const unicodeMode = flags.includes('u');
     const captures = getCaptures(expression);
+    console.log("captures", captures);
     const quantifiers = getQuantifiers(expression, flags);
     const unicode = getUnicode(expression, flags);
     const characterSets = getCharacterSets(expression);
@@ -30,15 +31,15 @@ function parse(regex) {
 
   function createObject(captures, quantifiers, unicode, characterSets, characterClasses, unicodePropertyEscapes, looks, boundaries, groupsAndRanges) {
     return {
-      ...(captures && { ...captures }),
-      ...(quantifiers && { ...quantifiers }),
-      ...(unicode && { ...unicode }),
-      ...(characterSets && { ...characterSets }),
-      ...(characterClasses && { ...characterClasses }),
-      ...(unicodePropertyEscapes && { ...unicodePropertyEscapes }),
-      ...(looks && { ...looks }),
-      ...(boundaries && { ...boundaries }),
-      ...(groupsAndRanges && { ...groupsAndRanges })
+      ...(captures ?? { ...captures }),
+      ...(quantifiers ?? { ...quantifiers }),
+      ...(unicode ?? { ...unicode }),
+      ...(characterSets ?? { ...characterSets }),
+      ...(characterClasses ?? { ...characterClasses }),
+      ...(unicodePropertyEscapes ?? { ...unicodePropertyEscapes }),
+      ...(looks ?? { ...looks }),
+      ...(boundaries ?? { ...boundaries }),
+      ...(groupsAndRanges ?? { ...groupsAndRanges })
     }
   }
 
@@ -74,7 +75,7 @@ function parse(regex) {
   const exp = parse(/^(?<=Hello (a(ga)in))\b(ABC)[^ack].{2}?(\P{Script=Cyrillic} \p{General_Category=Letter}\xff \u{12345})(?<isas>[ai]s)\s[easy]{1,5} \p{Script=Latin}\k<isas>\s(123)\1\2{3}\u1234 [\b]sometimes\cM\B(?=Goodbye)$/giusm);
   const tree = createTree(exp.regularExpression);
   const made = makeStatement(tree)
-  console.log(JSON.stringify(made, null, 4))
+  console.log(made)
   module.exports = {
     parse,
     createObject

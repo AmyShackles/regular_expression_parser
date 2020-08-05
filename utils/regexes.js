@@ -1,8 +1,6 @@
 const NAME = "(?<name>.+?)";
-const NON_CAPTURE = "^(?<non_capture_group>\\(\\?:(?<non_capture>.+?)\\))$";
-const NAMED_CAPTURE = "^(?<named_capture_group>\\(\\?<" + NAME + ">(?<named_capture>.+?)\\))$";
-const CAPTURE = "^(?<capture_group>\\((?<capture>[^\\?:].*)\\))$";
-const UNICODE_REGEX_IN_UNICODE_MODE = /(?<unicode>\\u{?(?<hex>[\da-fA-F]{4,5})\}?)/g;
+
+const UNICODE_REGEX_IN_UNICODE_MODE = "(?<unicode>\\\\u\\{?(?<hexadecimal>[\\da-fA-F]{4,5})[}]?)";
 const UNICODE_REGEX_NOT_IN_UNICODE_MODE = /(?<unicode>\\u(?<hex>[\da-fA-F]{4}))/g;
 const DIGIT = "(?<digit>\\\\d)";
 const NON_DIGIT = "(?<non_digit>\\\\D)";
@@ -22,7 +20,8 @@ const HEX = "(?<hex>\\\\x[\\dA-Fa-f]{2})";
 const DOTALL = "(?<!\\\\)(?<dotAll>\\.)";
 const DOT = "(?<!\\\\)(?<dot>\\.)";
 const NEGATED_CHARACTER_SET = "(?<negated_character_set>\\[\\^(?<negated_set>.+?)\\])";
-const CHARACTER_SET = "(?<character_set>\\[(?<set>[^^].*?)\\])";
+const RANGE = "(?<=\\[.*?)(?<range>.\\-.)(?=.*?\\])";
+const CHARACTER_SET = "(?<character_set>\\[(?<set>[^^](" + RANGE + "|" + ".)*?)\\])";
 const NON_GREEDY_RANGE_QUANTIFIER = "(?<!\\\\u)(?<non_greedy_range_quantifier>\\{\\d*,?\\d*\\}\\?)";
 const GREEDY_RANGE_QUANTIFIER = "(?<!\\\\u)(?<greedy_range_quantifier>\\{\\d*,?\\d*\\}(?!\\?))";
 const UNICODE_NAME = "(?<unicode_name>\\w*)";
@@ -48,10 +47,49 @@ const NON_GREEDY_KLEENE_STAR = "(?<non_greedy_kleene_star>\\*\\?)";
 const GREEDY_KLEENE_PLUS = "(?<greedy_kleene_plus>\\+)(?!\\?)";
 const NON_GREEDY_KLEENE_PLUS = "(?<non_greedy_kleene_plus>\\+\\?)";
 const ALTERNATION = "(?<!\\\\)(?<alternation>\\|)";
-const NAMED_BACKREFERENCE = "(?<!\\\\)(?<named_backreference>\\\\k<" + NAME + ">)";
+const NAMED_BACKREFERENCE = "(?<!\\\\)(?<named_backreference>\\\\k<(?<backreference>.+?)>)";
 const NUMERICAL_BACKREFERENCE = "(?<!\\\\)(?<numerical_backreference>\\\\[1-9]\\d*)";
-const RANGE = "(?<=\\[.*?)(?<range>.\\-.)(?=.*?\\])";
-const LITERAL = "(?<literal>.)";
+const LITERAL = "(?<!(\\\\|\\{|\\\\u|\\\\p))(?<literal>[^\\(\\)\\{\\\\\\}\\^\\$]+?)";
+
+const CONTENT_REGEX = [
+    UNICODE_REGEX_IN_UNICODE_MODE, 
+    DIGIT, 
+    NON_DIGIT, 
+    ALPHANUMERIC, 
+    NON_ALPHANUMERIC, 
+    WHITESPACE, 
+    NON_WHITESPACE, 
+    HORIZONTAL_TAB, 
+    CARRIAGE_RETURN,
+    LINEFEED,
+    VERTICAL_TAB,
+    FORM_FEED,
+    BACKSPACE,
+    NUL,
+    CONTROL_CHARACTER,
+    HEX,
+    DOTALL,
+    DOT,
+    NEGATED_CHARACTER_SET,
+    CHARACTER_SET,
+    UNICODE_PROPERTY_ESCAPE,
+    NEGATED_UNICODE_PROPERTY_ESCAPE,
+    POSITIVE_LOOKAHEAD,
+    NEGATIVE_LOOKAHEAD,
+    POSITIVE_LOOKBEHIND,
+    NEGATIVE_LOOKBEHIND,
+    WORD_BOUNDARY,
+    NON_WORD_BOUNDARY,
+    NAMED_BACKREFERENCE,
+    NUMERICAL_BACKREFERENCE,
+    LITERAL
+].join("|");
+console.log("CONTEXT_REGEX", CONTENT_REGEX)
+const SPECIFIERS = [NON_GREEDY_KLEENE_PLUS, NON_GREEDY_KLEENE_STAR, NON_GREEDY_OPTIONAL, NON_GREEDY_RANGE_QUANTIFIER, GREEDY_KLEENE_PLUS, GREEDY_KLEENE_STAR, GREEDY_OPTIONAL, GREEDY_RANGE_QUANTIFIER].join("|")
+const VALID_REGEX = "(?:(?:" + CONTENT_REGEX + "|(" + ALTERNATION + "(?=.+))(" + SPECIFIERS + ")?)*?)"
+const NON_CAPTURE = "^(?<non_capture_group>\\(\\?:(?<non_capture>.+?)\\))$";
+const NAMED_CAPTURE = "^(?<named_capture_group>\\(\\?<" + NAME + ">(?<named_capture>" + VALID_REGEX + ")\\))$";
+const CAPTURE = "^(?<capture_group>\\((?<capture>[^\\?:]" + VALID_REGEX + ")\\))$";
 
 module.exports = {
     NAME,
@@ -107,5 +145,6 @@ module.exports = {
     NAMED_BACKREFERENCE,
     NUMERICAL_BACKREFERENCE,
     RANGE,
-    LITERAL
+    LITERAL,
+    VALID_REGEX
 }

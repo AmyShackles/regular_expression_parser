@@ -2,7 +2,7 @@ const { UNICODE_REGEX_IN_UNICODE_MODE, UNICODE_REGEX_NOT_IN_UNICODE_MODE } = req
 
 module.exports = {
     getUnicode: (string, flags) => {
-        const unicodeRegex = flags.includes('u') ? UNICODE_REGEX_IN_UNICODE_MODE : UNICODE_REGEX_NOT_IN_UNICODE_MODE;
+        const unicodeRegex = flags.includes('u') ? new RegExp(UNICODE_REGEX_IN_UNICODE_MODE, 'g') : UNICODE_REGEX_NOT_IN_UNICODE_MODE;
         const unicode = {};
         
         [...string.matchAll(unicodeRegex)].forEach((regex) => {
@@ -13,7 +13,7 @@ module.exports = {
             const lastIndex = startingIndex + (groups[key].length - 1);
             // Get the hexadecimal values from unicode expression and parse them
             const group = groups.unicode;
-            let hex = groups.hex;
+            let hex = flags.includes('u') ? groups.hexadecimal : groups.hex;
             const codepoint = parseInt(hex, 16);
             hex = String.fromCodePoint(codepoint);
             unicode[startingIndex] = {
