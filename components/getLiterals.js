@@ -1,30 +1,34 @@
 const { LITERAL } = require("../utils/regexes");
+const { getParenStack } = require("../utils/getParenStack.js");
 
 module.exports = {
-    getLiterals: (string, parsedObject) => {
-        const literalRegex = new RegExp(LITERAL, 'g');
-        const seen = [];
-        const seenArray = Object.values(parsedObject);
-        seenArray.forEach(({startingIndex, lastIndex}) => {
-            for (startingIndex; startingIndex <= lastIndex; startingIndex++) {
-                seen[startingIndex] = true;
-            }
+    getLiterals: (string) => {
+        const validNumericalBackreferences = getParenStack(string);
+        let numericalReferences = [];
+        validNumericalBackreferences.forEach((_, index) => {
+            numericalReferences.push(index + 1);
         });
-        [...string.matchAll(literalRegex)].forEach(regex => {
+        numericalReferences = "(" + numericalReferences.join("|") + ")";
+        const literalRegex = new RegExp(
+            `(?<nonLiteral>\\\\(?:[wWbBdDsStrnvf0]|x[a-f0-9]{2}|u[a-f0-9]{4}|u\\{[a-f0-9]{1,5}\\})|\\[(?<set>.*?)\\]|(?<unicode_property_escape>\\\\[pP]\\{(?<unicode_name>\\w*)(?:\\=?)(?<negated_unicode_value>\\w*?)?\\})|(?<!\\\\u)(?<range_quantifier>\\{\\d*,?\\d*\\}\\??)|\\\\c[a-zA-Z]|\\\\${numericalReferences}|(\\\\k)?<\\w+>)|(?<literal>[\\w\\s.]+)`,
+            "g"
+        );
+        const literals = {};
+        [...string.matchAll(literalRegex)].forEach((regex) => {
             const { groups } = regex;
-            const key = "literal"
-            const group = groups[key];
+            const group = groups['literal'] || groups['nonLiteral'];
             const startingIndex = regex.index;
             const lastIndex = startingIndex + (group.length - 1);
-            if (seen[startingIndex] === undefined) {
-                parsedObject[startingIndex] = {
-                    type: key,
-                    startingIndex,
-                    lastIndex,
-                    group
-                }
-            }
+            console.log({nonLiteral: groups['nonLiteral']})
+            if (groups['literal']) {
+                literals[startingIndex] = {
+                type: 'literal',
+                startingIndex,
+                lastIndex,
+                group,
+            };
+        }
         });
-        return parsedObject;
-    }
-}
+        return literals;
+    },
+};
