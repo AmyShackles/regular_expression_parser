@@ -2,7 +2,7 @@ const { LITERAL } = require("../utils/regexes");
 const { getParenStack } = require("../utils/getParenStack.js");
 
 module.exports = {
-    getLiterals: (string) => {
+    getLiterals: (string, offset) => {
         const validNumericalBackreferences = getParenStack(string);
         let numericalReferences = [];
         validNumericalBackreferences.forEach((_, index) => {
@@ -16,18 +16,18 @@ module.exports = {
         const literals = {};
         [...string.matchAll(literalRegex)].forEach((regex) => {
             const { groups } = regex;
-            const group = groups['literal'] || groups['nonLiteral'];
-            const startingIndex = regex.index;
+            const group = groups["literal"] || groups["nonLiteral"];
+            const startingIndex = regex.index + offset;
             const lastIndex = startingIndex + (group.length - 1);
-            console.log({nonLiteral: groups['nonLiteral']})
-            if (groups['literal']) {
+            console.log({ nonLiteral: groups["nonLiteral"] });
+            if (groups["literal"]) {
                 literals[startingIndex] = {
-                type: 'literal',
-                startingIndex,
-                lastIndex,
-                group,
-            };
-        }
+                    type: "literal",
+                    startingIndex,
+                    lastIndex,
+                    group,
+                };
+            }
         });
         return literals;
     },
